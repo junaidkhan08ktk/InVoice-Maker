@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "InVoice Generator"
-include(":app")
+rootProject.name = "InVoiceGenerator"
+include(":composeApp")
  
