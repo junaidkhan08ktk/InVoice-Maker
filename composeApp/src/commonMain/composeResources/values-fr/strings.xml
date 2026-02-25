@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Générateur de Factures</string>
+    <string name="welcome_title">Créez des factures en 30 secondes</string>
+    <string name="welcome_subtitle">Professionnel, légalement conforme et hors ligne en premier.</string>
+    <string name="create_invoice">Créer une facture</string>
+    <string name="view_sample">Voir un exemple de facture</string>
+    <string name="dashboard">Tableau de bord</string>
+    <string name="invoices">Factures</string>
+    <string name="customers">Clients</string>
+    <string name="items">Articles</string>
+    <string name="settings">Paramètres</string>
+    <string name="new_invoice">Nouvelle facture</string>
+    <string name="sales_overview">Aperçu des ventes</string>
+    <string name="this_month">Ce mois-ci</string>
+    <string name="paid">Payé</string>
+    <string name="unpaid">Non payé</string>
+    <string name="recent_invoices">Factures récentes</string>
+    <string name="view_all">Tout voir</string>
+    <string name="no_invoices">Aucune facture créée pour l\'instant.</string>
+    <string name="upgrade_pro">Passer à Pro</string>
+    <string name="upgrade_desc">Factures illimitées, supprimer le filigrane et plus encore.</string>
+    <string name="business_profile">Profil de l\'entreprise</string>
+    <string name="language_currency">Langue et Devise</string>
+    <string name="about">À propos</string>
+    <string name="privacy_policy">Politique de confidentialité</string>
+    <string name="terms_conditions">Conditions générales</string>
+    <string name="version">Version 1.0</string>
+    <string name="select_language">Sélectionner la langue</string>
+    <string name="tax_rate">Taux de taxe (%)</string>
+    <string name="gstin">Numéro fiscal</string>
+</resources>

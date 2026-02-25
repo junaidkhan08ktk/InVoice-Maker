@@ -26,6 +26,7 @@ val viewModelModule = module {
     viewModel { BusinessViewModel(get()) }
     viewModel { DashboardViewModel(get()) }
     viewModel { InvoiceViewModel(get(), get(), get(), get()) }
+    viewModel { com.example.invoicegenerator.viewmodel.SettingsViewModel(get()) }
 }
 
 fun initKoin(config: (KoinApplication.() -> Unit)? = null) {

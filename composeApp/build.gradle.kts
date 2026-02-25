@@ -12,7 +12,7 @@ plugins {
 }
 
 compose.resources {
-    packageOfResClass = "com.example.invoicegenerator"
+    packageOfResClass = "com.example.invoicegenerator.generated.resources"
 }
 
 kotlin {

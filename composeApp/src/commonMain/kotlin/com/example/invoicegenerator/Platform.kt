@@ -12,10 +12,11 @@ interface Platform {
         invoice: com.example.invoicegenerator.data.entity.Invoice,
         items: List<com.example.invoicegenerator.data.entity.InvoiceItem>,
         template: com.example.invoicegenerator.domain.pdf.TemplateType,
-        isPro: Boolean
+        isPro: Boolean,
+        currency: String
     )
     fun formatDate(timestamp: Long): String
-    fun formatCurrency(amount: Double): String
+    fun formatCurrency(amount: Double, currency: String): String
 }
 
 expect fun getPlatform(): Platform

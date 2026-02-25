@@ -19,6 +19,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import com.example.invoicegenerator.data.entity.Business
 import com.example.invoicegenerator.viewmodel.BusinessViewModel
 import com.example.invoicegenerator.viewmodel.InvoiceViewModel
+import com.example.invoicegenerator.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,12 +27,14 @@ fun InvoiceCreateScreen(
     onPreview: (Long) -> Unit,
     onBack: () -> Unit,
     invoiceViewModel: InvoiceViewModel = koinViewModel(),
-    businessViewModel: BusinessViewModel = koinViewModel()
+    businessViewModel: BusinessViewModel = koinViewModel(),
+    settingsViewModel: SettingsViewModel = koinViewModel()
 ) {
     val businessProfile by businessViewModel.businessProfile.collectAsState()
     val selectedCustomer by invoiceViewModel.selectedCustomer.collectAsState()
     val invoiceItems by invoiceViewModel.invoiceItems.collectAsState()
     val totals = invoiceViewModel.calculateTotals(businessProfile)
+    val currency by settingsViewModel.currency.collectAsState(initial = "USD")
 
     var invoiceNumber by remember { mutableStateOf("INV-${kotlinx.datetime.Clock.System.now().toEpochMilliseconds() / 100000}") }
 
@@ -75,7 +78,7 @@ fun InvoiceCreateScreen(
                         val item = availableItems[index]
                         ListItem(
                             headlineContent = { Text(item.name) },
-                            supportingContent = { Text("₹${item.rate}") },
+                            supportingContent = { Text(getPlatform().formatCurrency(item.rate, currency)) },
                             modifier = Modifier.clickable {
                                 invoiceViewModel.addInvoiceItem(item)
                                 showItemPicker = false
@@ -154,7 +157,7 @@ fun InvoiceCreateScreen(
                 itemsIndexed(invoiceItems) { index, item ->
                     ListItem(
                         headlineContent = { Text(item.itemName) },
-                        supportingContent = { Text("${item.quantity} x ${getPlatform().formatCurrency(item.rate)} (${item.gstRate}% GST)") },
+                        supportingContent = { Text("${item.quantity} x ${getPlatform().formatCurrency(item.rate, currency)} (${item.gstRate}% GST)") },
                         trailingContent = {
                             IconButton(onClick = { invoiceViewModel.removeItem(index) }) {
                                 Icon(Icons.Default.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error)
@@ -173,10 +176,10 @@ fun InvoiceCreateScreen(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     val platform = getPlatform()
-                    TotalRow1("Subtotal", platform.formatCurrency(totals.subTotal))
-                    TotalRow1("CGST", platform.formatCurrency(totals.cgst))
-                    TotalRow1("SGST", platform.formatCurrency(totals.sgst))
-                    TotalRow1("Total Amount", platform.formatCurrency(totals.total), isBold = true)
+                    TotalRow1("Subtotal", platform.formatCurrency(totals.subTotal, currency))
+                    TotalRow1("CGST", platform.formatCurrency(totals.cgst, currency))
+                    TotalRow1("SGST", platform.formatCurrency(totals.sgst, currency))
+                    TotalRow1("Total Amount", platform.formatCurrency(totals.total, currency), isBold = true)
                 }
             }
 
