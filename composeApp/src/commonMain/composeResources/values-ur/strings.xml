@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">انوائس میکر</string>
+    <string name="welcome_title">30 سیکنڈ میں جی ایس ٹی انوائس بنائیں</string>
+    <string name="welcome_subtitle">پیشہ ورانہ، قانونی طور پر ہم آہنگ، اور آف لائن پہلے۔</string>
+    <string name="create_invoice">انوائس بنائیں</string>
+    <string name="view_sample">نمونہ انوائس دیکھیں</string>
+    <string name="dashboard">ڈیش بورڈ</string>
+    <string name="invoices">انوائسز</string>
+    <string name="customers">گاہک</string>
+    <string name="items">اشیاء</string>
+    <string name="settings">سیٹنگز</string>
+    <string name="new_invoice">نیا انوائس</string>
+    <string name="sales_overview">فروخت کا جائزہ</string>
+    <string name="this_month">اس مہینے</string>
+    <string name="paid">ادا شدہ</string>
+    <string name="unpaid">غیر ادا شدہ</string>
+    <string name="recent_invoices">حالیہ انوائسز</string>
+    <string name="view_all">سب دیکھیں</string>
+    <string name="no_invoices">ابھی تک کوئی انوائس نہیں بنائی گئی۔</string>
+    <string name="upgrade_pro">پرو میں اپ گریڈ کریں</string>
+    <string name="upgrade_desc">لامحدود انوائسز، واٹر مارک ہٹائیں، اور بہت کچھ۔</string>
+    <string name="business_profile">بزنس پروفائل</string>
+    <string name="language_currency">زبان اور کرنسی</string>
+    <string name="about">بارے میں</string>
+    <string name="privacy_policy">پرائیویسی پالیسی</string>
+    <string name="terms_conditions">شرائط و ضوابط</string>
+    <string name="version">ورژن 1.0</string>
+    <string name="select_language">زبان منتخب کریں</string>
+    <string name="tax_rate">ٹیکس کی شرح (%)</string>
+    <string name="gstin">GSTIN</string>
+</resources>

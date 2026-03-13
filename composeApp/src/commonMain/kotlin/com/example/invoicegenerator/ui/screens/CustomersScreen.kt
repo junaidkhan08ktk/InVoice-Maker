@@ -13,8 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import com.example.invoicegenerator.data.entity.Customer
+import com.example.invoicegenerator.generated.resources.Res
+import com.example.invoicegenerator.generated.resources.customers
+import com.example.invoicegenerator.generated.resources.gstin
 import com.example.invoicegenerator.ui.navigation.Screen
 import com.example.invoicegenerator.viewmodel.InvoiceViewModel
+import org.jetbrains.compose.resources.stringResource
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +59,7 @@ fun CustomersScreen(
     }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Customers") }) },
+        topBar = { TopAppBar(title = { Text(stringResource(Res.string.customers)) }) },
         bottomBar = { BottomNavigationBar(currentRoute = Screen.Customers.route, onNavigate = onNavigateTo) },
         floatingActionButton = {
             FloatingActionButton(onClick = { showAddDialog = true }) {
@@ -81,7 +86,7 @@ fun CustomerRow(customer: Customer) {
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(text = customer.name, style = MaterialTheme.typography.titleMedium)
-                Text(text = "GSTIN: ${customer.gstin ?: "N/A"}", style = MaterialTheme.typography.bodySmall)
+                Text(text = "${stringResource(Res.string.gstin)}: ${customer.gstin ?: "N/A"}", style = MaterialTheme.typography.bodySmall)
             }
         }
     }

@@ -14,24 +14,41 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
 import com.example.invoicegenerator.data.entity.Invoice
+import com.example.invoicegenerator.generated.resources.Res
+import com.example.invoicegenerator.generated.resources.customers
+import com.example.invoicegenerator.generated.resources.dashboard
+import com.example.invoicegenerator.generated.resources.invoices
+import com.example.invoicegenerator.generated.resources.items
+import com.example.invoicegenerator.generated.resources.new_invoice
+import com.example.invoicegenerator.generated.resources.no_invoices
+import com.example.invoicegenerator.generated.resources.paid
+import com.example.invoicegenerator.generated.resources.recent_invoices
+import com.example.invoicegenerator.generated.resources.sales_overview
+import com.example.invoicegenerator.generated.resources.settings
+import com.example.invoicegenerator.generated.resources.this_month
+import com.example.invoicegenerator.generated.resources.unpaid
+import com.example.invoicegenerator.generated.resources.view_all
 import com.example.invoicegenerator.ui.navigation.Screen
 import com.example.invoicegenerator.viewmodel.DashboardViewModel
+import org.jetbrains.compose.resources.stringResource
+import com.example.invoicegenerator.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     onNewInvoice: () -> Unit,
     onNavigateTo: (String) -> Unit,
-    viewModel: DashboardViewModel = koinViewModel()
+    viewModel: DashboardViewModel = koinViewModel(),
+    settingsViewModel: SettingsViewModel = koinViewModel()
 ) {
     val stats by viewModel.stats.collectAsState()
+    val currency by settingsViewModel.currency.collectAsState(initial = "USD")
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Dashboard") })
+            TopAppBar(title = { Text(stringResource(Res.string.dashboard)) })
         },
         bottomBar = {
             BottomNavigationBar(currentRoute = Screen.Dashboard.route, onNavigate = onNavigateTo)
@@ -40,7 +57,7 @@ fun DashboardScreen(
             ExtendedFloatingActionButton(
                 onClick = onNewInvoice,
                 icon = { Icon(Icons.Default.Add, contentDescription = null) },
-                text = { Text("New Invoice") }
+                text = { Text(stringResource(Res.string.new_invoice)) }
             )
         }
     ) { padding ->
@@ -53,7 +70,7 @@ fun DashboardScreen(
         ) {
             item {
                 Text(
-                    text = "Sales Overview",
+                    text = stringResource(Res.string.sales_overview),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -66,8 +83,8 @@ fun DashboardScreen(
                 ) {
                     StatsCard(
                         modifier = Modifier.weight(1f),
-                        title = "This Month",
-                        value = getPlatform().formatCurrency(stats.totalSales),
+                        title = stringResource(Res.string.this_month),
+                        value = getPlatform().formatCurrency(stats.totalSales, currency),
                         icon = Icons.Default.Email,
                         color = MaterialTheme.colorScheme.primaryContainer
                     )
@@ -81,14 +98,14 @@ fun DashboardScreen(
                 ) {
                     StatsCard(
                         modifier = Modifier.weight(1f),
-                        title = "Paid",
+                        title = stringResource(Res.string.paid),
                         value = "${stats.paidInvoicesCount}",
                         icon = Icons.Default.CheckCircle,
                         color = MaterialTheme.colorScheme.secondaryContainer
                     )
                     StatsCard(
                         modifier = Modifier.weight(1f),
-                        title = "Unpaid",
+                        title = stringResource(Res.string.unpaid),
                         value = "${stats.unpaidInvoicesCount}",
                         icon = Icons.Default.Person,
                         color = MaterialTheme.colorScheme.errorContainer
@@ -104,12 +121,12 @@ fun DashboardScreen(
                     verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Recent Invoices",
+                        text = stringResource(Res.string.recent_invoices),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
                     TextButton(onClick = { onNavigateTo(Screen.Invoices.route) }) {
-                        Text("View All")
+                        Text(stringResource(Res.string.view_all))
                     }
                 }
             }
@@ -117,7 +134,7 @@ fun DashboardScreen(
             if (stats.recentInvoices.isEmpty()) {
                 item {
                     Text(
-                        text = "No invoices created yet.",
+                        text = stringResource(Res.string.no_invoices),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(vertical = 16.dp)
@@ -125,7 +142,7 @@ fun DashboardScreen(
                 }
             } else {
                 items(stats.recentInvoices) { invoice ->
-                    InvoiceItemRow(invoice, onClick = { onNavigateTo(Screen.InvoicePreview.createRoute(invoice.id)) })
+                    InvoiceItemRow(invoice, currency, onClick = { onNavigateTo(Screen.InvoicePreview.createRoute(invoice.id)) })
                 }
             }
         }
@@ -154,7 +171,7 @@ fun StatsCard(
 }
 
 @Composable
-fun InvoiceItemRow(invoice: Invoice, onClick: () -> Unit = {}) {
+fun InvoiceItemRow(invoice: Invoice, currency: String, onClick: () -> Unit = {}) {
     Card(
         modifier = Modifier.fillMaxWidth().clickable { onClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
@@ -168,18 +185,18 @@ fun InvoiceItemRow(invoice: Invoice, onClick: () -> Unit = {}) {
         ) {
             Column {
                 Text(text = "Inv #${invoice.invoiceNumber}", fontWeight = FontWeight.Bold)
-                Text(text = getPlatform().formatCurrency(invoice.totalAmount), style = MaterialTheme.typography.bodyMedium)
+                Text(text = getPlatform().formatCurrency(invoice.totalAmount, currency), style = MaterialTheme.typography.bodyMedium)
             }
             if (invoice.isPaid) {
                 SuggestionChip(
                     onClick = {},
-                    label = { Text("Paid") },
+                    label = { Text(stringResource(Res.string.paid)) },
                     colors = SuggestionChipDefaults.suggestionChipColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
                 )
             } else {
                 SuggestionChip(
                     onClick = {},
-                    label = { Text("Unpaid") },
+                    label = { Text(stringResource(Res.string.unpaid)) },
                     colors = SuggestionChipDefaults.suggestionChipColors(containerColor = MaterialTheme.colorScheme.errorContainer)
                 )
             }
@@ -193,25 +210,25 @@ fun BottomNavigationBar(currentRoute: String, onNavigate: (String) -> Unit) {
         val isInvoicesSelected = currentRoute == Screen.Dashboard.route || currentRoute == Screen.Invoices.route
         NavigationBarItem(
             icon = { Icon(Icons.Default.Create, contentDescription = null) },
-            label = { Text("Invoices") },
+            label = { Text(stringResource(Res.string.invoices)) },
             selected = isInvoicesSelected,
             onClick = { onNavigate(Screen.Dashboard.route) }
         )
         NavigationBarItem(
             icon = { Icon(Icons.Default.Person, contentDescription = null) },
-            label = { Text("Customers") },
+            label = { Text(stringResource(Res.string.customers)) },
             selected = currentRoute == Screen.Customers.route,
             onClick = { onNavigate(Screen.Customers.route) }
         )
         NavigationBarItem(
             icon = { Icon(Icons.Default.AccountCircle, contentDescription = null) },
-            label = { Text("Items") },
+            label = { Text(stringResource(Res.string.items)) },
             selected = currentRoute == Screen.Items.route,
             onClick = { onNavigate(Screen.Items.route) }
         )
         NavigationBarItem(
             icon = { Icon(Icons.Default.Settings, contentDescription = null) },
-            label = { Text("Settings") },
+            label = { Text(stringResource(Res.string.settings)) },
             selected = currentRoute == Screen.Settings.route,
             onClick = { onNavigate(Screen.Settings.route) }
         )

@@ -19,14 +19,18 @@ import com.example.invoicegenerator.ui.screens.ItemsScreen
 import com.example.invoicegenerator.ui.screens.PaywallScreen
 import com.example.invoicegenerator.ui.screens.SettingsScreen
 import com.example.invoicegenerator.ui.screens.WelcomeScreen
+import com.example.invoicegenerator.ui.screens.LanguageSelectionScreen
 import com.example.invoicegenerator.viewmodel.BusinessViewModel
+import com.example.invoicegenerator.viewmodel.SettingsViewModel
 
 @Composable
 fun NavGraph(
     navController: NavHostController = rememberNavController(),
-    businessViewModel: BusinessViewModel = koinViewModel()
+    businessViewModel: BusinessViewModel = koinViewModel(),
+    settingsViewModel: SettingsViewModel = koinViewModel()
 ) {
     val businessProfile by businessViewModel.businessProfile.collectAsState()
+    val language by settingsViewModel.language.collectAsState(initial = "en")
 
     NavHost(
         navController = navController,
@@ -35,7 +39,9 @@ fun NavGraph(
         composable(Screen.Welcome.route) {
             WelcomeScreen(
                 onCreateInvoice = {
-                    if (businessProfile == null) {
+                    if (language == null) {
+                        navController.navigate(Screen.LanguageSelection.route)
+                    } else if (businessProfile == null) {
                         navController.navigate(Screen.BusinessSetup.route)
                     } else {
                         navController.navigate(Screen.CreateInvoice.route)
@@ -43,6 +49,20 @@ fun NavGraph(
                 },
                 onViewSample = {
                     navController.navigate(Screen.InvoicePreview.createRoute(-1L))
+                }
+            )
+        }
+
+        composable(Screen.LanguageSelection.route) {
+            LanguageSelectionScreen(
+                onLanguageSelected = {
+                    if (businessProfile == null) {
+                        navController.navigate(Screen.BusinessSetup.route) {
+                            popUpTo(Screen.Welcome.route) { inclusive = false }
+                        }
+                    } else {
+                        navController.popBackStack()
+                    }
                 }
             )
         }

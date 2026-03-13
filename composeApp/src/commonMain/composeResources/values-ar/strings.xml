@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">صانع الفواتير</string>
+    <string name="welcome_title">إنشاء فواتير ضريبة القيمة المضافة في 30 ثانية</string>
+    <string name="welcome_subtitle">احترافي، متوافق قانونياً، ويعمل بدون إنترنت أولاً.</string>
+    <string name="create_invoice">إنشاء فاتورة</string>
+    <string name="view_sample">عرض فاتورة عينة</string>
+    <string name="dashboard">لوحة التحكم</string>
+    <string name="invoices">الفواتير</string>
+    <string name="customers">العملاء</string>
+    <string name="items">الأصناف</string>
+    <string name="settings">الإعدادات</string>
+    <string name="new_invoice">فاتورة جديدة</string>
+    <string name="sales_overview">نظرة عامة على المبيعات</string>
+    <string name="this_month">هذا الشهر</string>
+    <string name="paid">مدفوع</string>
+    <string name="unpaid">غير مدفوع</string>
+    <string name="recent_invoices">الفواتير الأخيرة</string>
+    <string name="view_all">عرض الكل</string>
+    <string name="no_invoices">لم يتم إنشاء فواتير بعد.</string>
+    <string name="upgrade_pro">الترقية إلى برو</string>
+    <string name="upgrade_desc">فواتير غير محدودة، إزالة العلامة المائية، والمزيد.</string>
+    <string name="business_profile">ملف العمل</string>
+    <string name="language_currency">اللغة والعملة</string>
+    <string name="about">حول</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="terms_conditions">الشروط والأحكام</string>
+    <string name="version">الإصدار 1.0</string>
+    <string name="select_language">اختر اللغة</string>
+    <string name="tax_rate">معدل الضريبة (%)</string>
+    <string name="gstin">الرقم الضريبي</string>
+</resources>

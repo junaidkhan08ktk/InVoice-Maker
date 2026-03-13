@@ -28,9 +28,25 @@ class IOSPlatform : Platform {
         invoice: com.example.invoicegenerator.data.entity.Invoice,
         items: List<com.example.invoicegenerator.data.entity.InvoiceItem>,
         template: com.example.invoicegenerator.domain.pdf.TemplateType,
-        isPro: Boolean
+        isPro: Boolean,
+        currency: String
     ) {
         // TODO: Implement PDF generation for iOS
+    }
+
+    private fun getCurrencySymbol(currency: String): String {
+        return when (currency) {
+            "INR" -> "₹"
+            "USD" -> "$"
+            "EUR" -> "€"
+            "GBP" -> "£"
+            "PKR" -> "Rs "
+            "SAR" -> "SR "
+            "BDT" -> "৳"
+            "BRL" -> "R$"
+            "RUB" -> "₽"
+            else -> "$currency "
+        }
     }
 
     override fun formatDate(timestamp: Long): String {
@@ -40,12 +56,13 @@ class IOSPlatform : Platform {
         return formatter.stringFromDate(date)
     }
 
-    override fun formatCurrency(amount: Double): String {
+    override fun formatCurrency(amount: Double, currency: String): String {
+        val symbol = getCurrencySymbol(currency)
         val formatter = NSNumberFormatter()
         formatter.numberStyle = platform.Foundation.NSNumberFormatterDecimalStyle
         formatter.minimumFractionDigits = 2u
         formatter.maximumFractionDigits = 2u
-        return "₹${formatter.stringFromNumber(NSNumber(amount)) ?: "0.00"}"
+        return "$symbol${formatter.stringFromNumber(NSNumber(amount)) ?: "0.00"}"
     }
 }
 

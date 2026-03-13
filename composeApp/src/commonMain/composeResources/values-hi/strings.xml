@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">इनवॉइस मेकर</string>
+    <string name="welcome_title">30 सेकंड में जीएसटी इनवॉइस बनाएं</string>
+    <string name="welcome_subtitle">पेशेवर, कानूनी रूप से अनुपालन और ऑफलाइन-प्रथम।</string>
+    <string name="create_invoice">इनवॉइस बनाएं</string>
+    <string name="view_sample">नमूना इनवॉइस देखें</string>
+    <string name="dashboard">डैशबोर्ड</string>
+    <string name="invoices">इनवॉइस</string>
+    <string name="customers">ग्राहक</string>
+    <string name="items">वस्तुएं</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="new_invoice">नया इनवॉइस</string>
+    <string name="sales_overview">बिक्री का अवलोकन</string>
+    <string name="this_month">इस महीने</string>
+    <string name="paid">भुगतान किया</string>
+    <string name="unpaid">अवैतनिक</string>
+    <string name="recent_invoices">हाल के इनवॉइस</string>
+    <string name="view_all">सभी देखें</string>
+    <string name="no_invoices">अभी तक कोई इनवॉइस नहीं बनाया गया है।</string>
+    <string name="upgrade_pro">प्रो में अपग्रेड करें</string>
+    <string name="upgrade_desc">असीमित इनवॉइस, वॉटरमार्क हटाएं, और बहुत कुछ।</string>
+    <string name="business_profile">व्यापार प्रोफ़ाइल</string>
+    <string name="language_currency">भाषा और मुद्रा</string>
+    <string name="about">के बारे में</string>
+    <string name="privacy_policy">गोपनीयता नीति</string>
+    <string name="terms_conditions">नियम और शर्तें</string>
+    <string name="version">संस्करण 1.0</string>
+    <string name="select_language">भाषा चुनें</string>
+    <string name="tax_rate">कर दर (%)</string>
+    <string name="gstin">GSTIN</string>
+</resources>

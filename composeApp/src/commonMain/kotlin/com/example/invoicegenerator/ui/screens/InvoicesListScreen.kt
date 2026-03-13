@@ -15,6 +15,10 @@ import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import com.example.invoicegenerator.ui.navigation.Screen
 import com.example.invoicegenerator.viewmodel.DashboardViewModel
+import com.example.invoicegenerator.viewmodel.SettingsViewModel
+import org.jetbrains.compose.resources.stringResource
+import com.example.invoicegenerator.generated.resources.Res
+import com.example.invoicegenerator.generated.resources.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,15 +26,17 @@ fun InvoicesListScreen(
     onInvoiceClick: (Long) -> Unit,
     onNewInvoice: () -> Unit,
     onNavigateTo: (String) -> Unit,
-    viewModel: DashboardViewModel = koinViewModel() // Reuse or create specific list VM
+    viewModel: DashboardViewModel = koinViewModel(),
+    settingsViewModel: SettingsViewModel = koinViewModel()
 ) {
     val stats by viewModel.stats.collectAsState()
-    var filterByPaid by remember { mutableStateOf<Boolean?>(null) } // null = all, true = paid, false = unpaid
+    val currency by settingsViewModel.currency.collectAsState(initial = "USD")
+    var filterByPaid by remember { mutableStateOf<Boolean?>(null) }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("All Invoices") },
+                title = { Text(stringResource(Res.string.invoices)) },
                 navigationIcon = {
                     IconButton(onClick = { onNavigateTo(Screen.Dashboard.route) }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = null)
@@ -71,7 +77,7 @@ fun InvoicesListScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(filteredInvoices) { invoice ->
-                    InvoiceItemRow(invoice, onClick = { onInvoiceClick(invoice.id) })
+                    InvoiceItemRow(invoice, currency, onClick = { onInvoiceClick(invoice.id) })
                 }
             }
         }

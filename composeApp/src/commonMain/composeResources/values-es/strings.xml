@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Generador de Facturas</string>
+    <string name="welcome_title">Cree facturas en 30 segundos</string>
+    <string name="welcome_subtitle">Profesional, legalmente compatible y primero fuera de línea.</string>
+    <string name="create_invoice">Crear factura</string>
+    <string name="view_sample">Ver factura de muestra</string>
+    <string name="dashboard">Panel</string>
+    <string name="invoices">Facturas</string>
+    <string name="customers">Clientes</string>
+    <string name="items">Artículos</string>
+    <string name="settings">Ajustes</string>
+    <string name="new_invoice">Nueva factura</string>
+    <string name="sales_overview">Resumen de ventas</string>
+    <string name="this_month">Este mes</string>
+    <string name="paid">Pagado</string>
+    <string name="unpaid">No pagado</string>
+    <string name="recent_invoices">Facturas recientes</string>
+    <string name="view_all">Ver todo</string>
+    <string name="no_invoices">Aún no se han creado facturas.</string>
+    <string name="upgrade_pro">Actualizar a Pro</string>
+    <string name="upgrade_desc">Facturas ilimitadas, quitar marca de agua y más.</string>
+    <string name="business_profile">Perfil de negocio</string>
+    <string name="language_currency">Idioma y Moneda</string>
+    <string name="about">Acerca de</string>
+    <string name="privacy_policy">Política de privacidad</string>
+    <string name="terms_conditions">Términos y condiciones</string>
+    <string name="version">Versión 1.0</string>
+    <string name="select_language">Seleccionar idioma</string>
+    <string name="tax_rate">Tasa de impuesto (%)</string>
+    <string name="gstin">ID de Impuestos</string>
+</resources>
