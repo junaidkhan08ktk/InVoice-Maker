@@ -16,8 +16,9 @@ import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
 import com.example.invoicegenerator.viewmodel.SettingsViewModel
 import org.jetbrains.compose.resources.stringResource
-import com.example.invoicegenerator.generated.resources.Res
-import com.example.invoicegenerator.generated.resources.*
+import com.example.invoicegenerator.Res
+import com.example.invoicegenerator.*
+import com.example.invoicegenerator.select_language
 
 data class Language(
     val code: String,
@@ -44,8 +45,9 @@ val supportedLanguages = listOf(
 @Composable
 fun LanguageSelectionScreen(
     onLanguageSelected: () -> Unit,
-    viewModel: SettingsViewModel = koinViewModel()
 ) {
+
+    val viewModel: SettingsViewModel=koinViewModel()
     val currentLanguage by viewModel.language.collectAsState(initial = "en")
 
     Scaffold(
@@ -92,6 +94,7 @@ fun LanguageSelectionScreen(
                     modifier = Modifier.clickable {
                         viewModel.setLanguage(language.code)
                         viewModel.setCurrency(language.defaultCurrency)
+                        getPlatform().setLanguage(language.code)
                         onLanguageSelected()
                     }
                 )

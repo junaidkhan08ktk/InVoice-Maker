@@ -21,22 +21,52 @@ import com.example.invoicegenerator.viewmodel.BusinessViewModel
 import com.example.invoicegenerator.viewmodel.InvoiceViewModel
 import com.example.invoicegenerator.viewmodel.SettingsViewModel
 
+import org.jetbrains.compose.resources.stringResource
+import com.example.invoicegenerator.Res
+import com.example.invoicegenerator.*
+import com.example.invoicegenerator.create_invoice
+import com.example.invoicegenerator.select_customer
+import com.example.invoicegenerator.add_item
+import com.example.invoicegenerator.subtotal
+import com.example.invoicegenerator.cgst
+import com.example.invoicegenerator.sgst
+import com.example.invoicegenerator.total_amount
+import com.example.invoicegenerator.generate_invoice
+import com.example.invoicegenerator.no_customers_found
+import com.example.invoicegenerator.no_items_found
+import com.example.invoicegenerator.cancel
+import com.example.invoicegenerator.gstin
+import com.example.invoicegenerator.select_item
+import com.example.invoicegenerator.items
+import com.example.invoicegenerator.invoice_prefix
+import com.example.invoicegenerator.not_available
+import com.example.invoicegenerator.tax_gst
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InvoiceCreateScreen(
     onPreview: (Long) -> Unit,
     onBack: () -> Unit,
-    invoiceViewModel: InvoiceViewModel = koinViewModel(),
-    businessViewModel: BusinessViewModel = koinViewModel(),
-    settingsViewModel: SettingsViewModel = koinViewModel()
-) {
+
+    ) {
+
+    val invoiceViewModel: InvoiceViewModel = koinViewModel()
+    val businessViewModel: BusinessViewModel = koinViewModel()
+    val settingsViewModel: SettingsViewModel = koinViewModel()
     val businessProfile by businessViewModel.businessProfile.collectAsState()
     val selectedCustomer by invoiceViewModel.selectedCustomer.collectAsState()
     val invoiceItems by invoiceViewModel.invoiceItems.collectAsState()
     val totals = invoiceViewModel.calculateTotals(businessProfile)
     val currency by settingsViewModel.currency.collectAsState(initial = "USD")
 
-    var invoiceNumber by remember { mutableStateOf("INV-${kotlinx.datetime.Clock.System.now().toEpochMilliseconds() / 100000}") }
+    val prefix = stringResource(Res.string.invoice_prefix)
+    var invoiceNumber by remember(prefix) {
+        mutableStateOf(
+            "$prefix${
+                kotlinx.datetime.Clock.System.now().toEpochMilliseconds() / 100000
+            }"
+        )
+    }
 
     var showCustomerPicker by remember { mutableStateOf(false) }
     var showItemPicker by remember { mutableStateOf(false) }
@@ -46,7 +76,7 @@ fun InvoiceCreateScreen(
     if (showCustomerPicker) {
         AlertDialog(
             onDismissRequest = { showCustomerPicker = false },
-            title = { Text("Select Customer") },
+            title = { Text(stringResource(Res.string.select_customer)) },
             text = {
                 LazyColumn {
                     items(customers.size) { index ->
@@ -60,25 +90,36 @@ fun InvoiceCreateScreen(
                         )
                     }
                     if (customers.isEmpty()) {
-                        item { Text("No customers found. Add one in the Customers tab.") }
+                        item { Text(stringResource(Res.string.no_customers_found)) }
                     }
                 }
             },
-            confirmButton = { TextButton(onClick = { showCustomerPicker = false }) { Text("Cancel") } }
+            confirmButton = {
+                TextButton(onClick = { showCustomerPicker = false }) {
+                    Text(stringResource(Res.string.cancel))
+                }
+            }
         )
     }
 
     if (showItemPicker) {
         AlertDialog(
             onDismissRequest = { showItemPicker = false },
-            title = { Text("Select Item") },
+            title = { Text(stringResource(Res.string.select_item)) },
             text = {
                 LazyColumn {
                     items(availableItems.size) { index ->
                         val item = availableItems[index]
                         ListItem(
                             headlineContent = { Text(item.name) },
-                            supportingContent = { Text(getPlatform().formatCurrency(item.rate, currency)) },
+                            supportingContent = {
+                                Text(
+                                    getPlatform().formatCurrency(
+                                        item.rate,
+                                        currency
+                                    )
+                                )
+                            },
                             modifier = Modifier.clickable {
                                 invoiceViewModel.addInvoiceItem(item)
                                 showItemPicker = false
@@ -86,18 +127,22 @@ fun InvoiceCreateScreen(
                         )
                     }
                     if (availableItems.isEmpty()) {
-                        item { Text("No items found. Add one in the Items tab.") }
+                        item { Text(stringResource(Res.string.no_items_found)) }
                     }
                 }
             },
-            confirmButton = { TextButton(onClick = { showItemPicker = false }) { Text("Cancel") } }
+            confirmButton = {
+                TextButton(onClick = { showItemPicker = false }) {
+                    Text(stringResource(Res.string.cancel))
+                }
+            }
         )
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Create Invoice") },
+                title = { Text(stringResource(Res.string.create_invoice)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = null)
@@ -125,16 +170,23 @@ fun InvoiceCreateScreen(
                     Spacer(modifier = Modifier.width(16.dp))
                     Column {
                         Text(
-                            text = selectedCustomer?.name ?: "Select Customer",
+                            text = selectedCustomer?.name
+                                ?: stringResource(Res.string.select_customer),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
                         if (selectedCustomer != null) {
-                            Text(text = "GSTIN: ${selectedCustomer?.gstin ?: "N/A"}")
+                            Text(
+                                text = "${stringResource(Res.string.gstin)}: ${
+                                    selectedCustomer?.gstin ?: stringResource(
+                                        Res.string.not_available
+                                    )
+                                }"
+                            )
                         }
                     }
                     Spacer(modifier = Modifier.weight(1f))
-                    Icon(Icons.Default.Person, contentDescription = null)
+                    Icon(Icons.Default.Add, contentDescription = null)
                 }
             }
 
@@ -146,10 +198,14 @@ fun InvoiceCreateScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Items", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                Text(
+                    text = stringResource(Res.string.items),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
                 TextButton(onClick = { showItemPicker = true }) {
                     Icon(Icons.Default.Add, contentDescription = null)
-                    Text("Add Item")
+                    Text(stringResource(Res.string.add_item))
                 }
             }
 
@@ -157,10 +213,23 @@ fun InvoiceCreateScreen(
                 itemsIndexed(invoiceItems) { index, item ->
                     ListItem(
                         headlineContent = { Text(item.itemName) },
-                        supportingContent = { Text("${item.quantity} x ${getPlatform().formatCurrency(item.rate, currency)} (${item.gstRate}% GST)") },
+                        supportingContent = {
+                            Text(
+                                "${item.quantity} x ${
+                                    getPlatform().formatCurrency(
+                                        item.rate,
+                                        currency
+                                    )
+                                } (${item.gstRate}% ${stringResource(Res.string.tax_gst)})"
+                            )
+                        },
                         trailingContent = {
                             IconButton(onClick = { invoiceViewModel.removeItem(index) }) {
-                                Icon(Icons.Default.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error)
+                                Icon(
+                                    Icons.Default.Delete,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.error
+                                )
                             }
                         }
                     )
@@ -176,10 +245,23 @@ fun InvoiceCreateScreen(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     val platform = getPlatform()
-                    TotalRow1("Subtotal", platform.formatCurrency(totals.subTotal, currency))
-                    TotalRow1("CGST", platform.formatCurrency(totals.cgst, currency))
-                    TotalRow1("SGST", platform.formatCurrency(totals.sgst, currency))
-                    TotalRow1("Total Amount", platform.formatCurrency(totals.total, currency), isBold = true)
+                    TotalRow1(
+                        stringResource(Res.string.subtotal),
+                        platform.formatCurrency(totals.subTotal, currency)
+                    )
+                    TotalRow1(
+                        stringResource(Res.string.cgst),
+                        platform.formatCurrency(totals.cgst, currency)
+                    )
+                    TotalRow1(
+                        stringResource(Res.string.sgst),
+                        platform.formatCurrency(totals.sgst, currency)
+                    )
+                    TotalRow1(
+                        stringResource(Res.string.total_amount),
+                        platform.formatCurrency(totals.total, currency),
+                        isBold = true
+                    )
                 }
             }
 
@@ -198,7 +280,7 @@ fun InvoiceCreateScreen(
                     .height(56.dp),
                 enabled = selectedCustomer != null && invoiceItems.isNotEmpty()
             ) {
-                Text("Generate Invoice")
+                Text(stringResource(Res.string.generate_invoice))
             }
         }
     }

@@ -23,15 +23,41 @@ import com.example.invoicegenerator.viewmodel.BusinessViewModel
 import com.example.invoicegenerator.viewmodel.InvoiceWithItems
 import com.example.invoicegenerator.viewmodel.SettingsViewModel
 
+import org.jetbrains.compose.resources.stringResource
+import com.example.invoicegenerator.Res
+import com.example.invoicegenerator.*
+import com.example.invoicegenerator.invoice_preview
+import com.example.invoicegenerator.share_download_pdf
+import com.example.invoicegenerator.gstin
+import com.example.invoicegenerator.date
+import com.example.invoicegenerator.bill_to
+import com.example.invoicegenerator.description
+import com.example.invoicegenerator.qty
+import com.example.invoicegenerator.rate
+import com.example.invoicegenerator.total
+import com.example.invoicegenerator.subtotal
+import com.example.invoicegenerator.cgst
+import com.example.invoicegenerator.sgst
+import com.example.invoicegenerator.grand_total
+import com.example.invoicegenerator.tax_gst
+import com.example.invoicegenerator.invoice_number_label
+import com.example.invoicegenerator.customer_label
+import com.example.invoicegenerator.data.entity.Business
+import com.example.invoicegenerator.data.entity.Customer
+import com.example.invoicegenerator.unknown
+import com.example.invoicegenerator.free_version_watermark
+import com.example.invoicegenerator.domain.pdf.PdfLabels
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InvoicePreviewScreen(
     invoiceId: Long,
     onBack: () -> Unit,
-    viewModel: InvoiceViewModel = koinViewModel(),
-    businessViewModel: BusinessViewModel = koinViewModel(),
-    settingsViewModel: SettingsViewModel = koinViewModel()
-) {
+
+    ) {
+    val viewModel: InvoiceViewModel = koinViewModel()
+    val businessViewModel: BusinessViewModel = koinViewModel()
+    val settingsViewModel: SettingsViewModel = koinViewModel()
     val platform = getPlatform()
     val isPro by viewModel.isPro.collectAsState(initial = false)
     val invoiceData by viewModel.getInvoiceById(invoiceId).collectAsState(initial = null)
@@ -39,10 +65,28 @@ fun InvoicePreviewScreen(
     val currency by settingsViewModel.currency.collectAsState(initial = "USD")
     var selectedTemplate by remember { mutableStateOf(com.example.invoicegenerator.domain.pdf.TemplateType.CLASSIC) }
 
+    val pdfLabels = PdfLabels(
+        gstin = stringResource(Res.string.gstin),
+        invoiceNumber = stringResource(Res.string.invoice_number_label),
+        date = stringResource(Res.string.date),
+        billTo = stringResource(Res.string.bill_to),
+        description = stringResource(Res.string.description),
+        qty = stringResource(Res.string.qty),
+        rate = stringResource(Res.string.rate),
+        total = stringResource(Res.string.total),
+        subtotal = stringResource(Res.string.subtotal),
+        cgst = stringResource(Res.string.cgst),
+        sgst = stringResource(Res.string.sgst),
+        grandTotal = stringResource(Res.string.grand_total),
+        watermark = stringResource(Res.string.free_version_watermark)
+    )
+
+    val unknownLabel = stringResource(Res.string.unknown)
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Invoice Preview") },
+                title = { Text(stringResource(Res.string.invoice_preview)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = null)
@@ -55,12 +99,13 @@ fun InvoicePreviewScreen(
                         if (b != null && d != null) {
                             platform.generateAndShareInvoice(
                                 business = b,
-                                customer = d.customer ?: com.example.invoicegenerator.data.entity.Customer(name = "Unknown"),
+                                customer = d.customer ?: Customer(name = unknownLabel),
                                 invoice = d.invoice,
                                 items = d.items,
                                 template = selectedTemplate,
                                 isPro = isPro,
-                                currency = currency
+                                currency = currency,
+                                labels = pdfLabels
                             )
                         }
                     }) {
@@ -88,13 +133,14 @@ fun InvoicePreviewScreen(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    com.example.invoicegenerator.domain.pdf.TemplateType.values().forEach { template ->
-                        FilterChip(
-                            selected = selectedTemplate == template,
-                            onClick = { selectedTemplate = template },
-                            label = { Text(template.name) }
-                        )
-                    }
+                    com.example.invoicegenerator.domain.pdf.TemplateType.values()
+                        .forEach { template ->
+                            FilterChip(
+                                selected = selectedTemplate == template,
+                                onClick = { selectedTemplate = template },
+                                label = { Text(template.name) }
+                            )
+                        }
                 }
 
                 Card(
@@ -115,9 +161,11 @@ fun InvoicePreviewScreen(
                                 com.example.invoicegenerator.domain.pdf.TemplateType.CLASSIC -> {
                                     ClassicPreview(businessProfile, data, currency)
                                 }
+
                                 com.example.invoicegenerator.domain.pdf.TemplateType.MODERN -> {
                                     ModernPreview(businessProfile, data, currency)
                                 }
+
                                 com.example.invoicegenerator.domain.pdf.TemplateType.THERMAL -> {
                                     ThermalPreview(businessProfile, data, currency)
                                 }
@@ -126,11 +174,11 @@ fun InvoicePreviewScreen(
 
                         if (!isPro) {
                             Text(
-                                text = "FREE VERSION - WATERMARKED",
+                                text = stringResource(Res.string.free_version_watermark),
                                 modifier = Modifier
                                     .align(Alignment.Center)
                                     .graphicsLayer(alpha = 0.1f, rotationZ = -45f),
-                                style = MaterialTheme.typography.displayMedium,
+                                style = MaterialTheme.typography.displaySmall,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center
                             )
@@ -147,18 +195,19 @@ fun InvoicePreviewScreen(
                         if (b != null && d != null) {
                             platform.generateAndShareInvoice(
                                 business = b,
-                                customer = d.customer ?: com.example.invoicegenerator.data.entity.Customer(name = "Unknown"),
+                                customer = d.customer ?: Customer(name = unknownLabel),
                                 invoice = d.invoice,
                                 items = d.items,
                                 template = selectedTemplate,
                                 isPro = isPro,
-                                currency = currency
+                                currency = currency,
+                                labels = pdfLabels
                             )
                         }
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Share/Download PDF")
+                    Text(stringResource(Res.string.share_download_pdf))
                 }
             }
         }
@@ -166,28 +215,41 @@ fun InvoicePreviewScreen(
 }
 
 @Composable
-fun ClassicPreview(business: com.example.invoicegenerator.data.entity.Business?, data: InvoiceWithItems, currency: String) {
+fun ClassicPreview(
+    business: Business?,
+    data: InvoiceWithItems,
+    currency: String
+) {
     val platform = getPlatform()
     Text(
-        text = business?.name ?: "Business Name",
+        text = business?.name ?: stringResource(Res.string.unknown),
         style = MaterialTheme.typography.headlineSmall,
         fontWeight = FontWeight.Bold
     )
-    Text(text = "GSTIN: ${business?.gstin ?: "N/A"}")
+    Text(text = "${stringResource(Res.string.gstin)}: ${business?.gstin ?: "N/A"}")
     Spacer(modifier = Modifier.height(8.dp))
-    Text(text = "Customer: ${data.customer?.name ?: "N/A"}")
+    Text(
+        text = "${stringResource(Res.string.customer_label)}: ${
+            data.customer?.name ?: stringResource(
+                Res.string.unknown
+            )
+        }"
+    )
     if (data.customer?.gstin != null) {
-        Text(text = "Customer GSTIN: ${data.customer.gstin}")
+        Text(text = "${stringResource(Res.string.gstin)}: ${data.customer.gstin}")
     }
     Spacer(modifier = Modifier.height(16.dp))
     HorizontalDivider()
     Spacer(modifier = Modifier.height(16.dp))
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(text = "Invoice: ${data.invoice.invoiceNumber}", fontWeight = FontWeight.Bold)
-        Text(text = "Date: ${platform.formatDate(data.invoice.date)}")
+        Text(
+            text = "${stringResource(Res.string.invoice_label)}: ${data.invoice.invoiceNumber}",
+            fontWeight = FontWeight.Bold
+        )
+        Text(text = "${stringResource(Res.string.date)}: ${platform.formatDate(data.invoice.date)}")
     }
     Spacer(modifier = Modifier.height(24.dp))
-    
+
     data.items.forEach { item ->
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text(text = "${item.itemName} x ${item.quantity}")
@@ -195,28 +257,49 @@ fun ClassicPreview(business: com.example.invoicegenerator.data.entity.Business?,
         }
         Spacer(modifier = Modifier.height(8.dp))
     }
-    
+
     HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-    
-    TotalRow("Subtotal", platform.formatCurrency(data.invoice.subTotal, currency))
-    TotalRow("Tax (GST)", platform.formatCurrency(data.invoice.cgst + data.invoice.sgst + data.invoice.igst, currency))
-    TotalRow("Grand Total", platform.formatCurrency(data.invoice.totalAmount, currency), isBold = true)
+
+    TotalRow(
+        stringResource(Res.string.subtotal),
+        platform.formatCurrency(data.invoice.subTotal, currency)
+    )
+    TotalRow(
+        stringResource(Res.string.tax_gst),
+        platform.formatCurrency(data.invoice.cgst + data.invoice.sgst + data.invoice.igst, currency)
+    )
+    TotalRow(
+        stringResource(Res.string.grand_total),
+        platform.formatCurrency(data.invoice.totalAmount, currency),
+        isBold = true
+    )
 }
 
 @Composable
-fun ModernPreview(business: com.example.invoicegenerator.data.entity.Business?, data: InvoiceWithItems, currency: String) {
+fun ModernPreview(
+    business: com.example.invoicegenerator.data.entity.Business?,
+    data: InvoiceWithItems,
+    currency: String
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f))
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(
+                alpha = 0.1f
+            )
+        )
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = (business?.name ?: "Business Name").uppercase(),
+                text = (business?.name ?: stringResource(Res.string.unknown)).uppercase(),
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.ExtraBold,
                 color = MaterialTheme.colorScheme.primary
             )
-            Text(text = "GSTIN: ${business?.gstin ?: "N/A"}", style = MaterialTheme.typography.labelMedium)
+            Text(
+                text = "${stringResource(Res.string.gstin)}: ${business?.gstin ?: "N/A"}",
+                style = MaterialTheme.typography.labelMedium
+            )
         }
     }
     Spacer(modifier = Modifier.height(24.dp))
@@ -224,23 +307,44 @@ fun ModernPreview(business: com.example.invoicegenerator.data.entity.Business?, 
 }
 
 @Composable
-fun ThermalPreview(business: com.example.invoicegenerator.data.entity.Business?, data: InvoiceWithItems, currency: String) {
+fun ThermalPreview(
+    business: Business?,
+    data: InvoiceWithItems,
+    currency: String
+) {
     val platform = getPlatform()
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
-        Text(text = business?.name ?: "Business Name", fontWeight = FontWeight.Bold)
+        Text(
+            text = business?.name ?: stringResource(Res.string.unknown),
+            fontWeight = FontWeight.Bold
+        )
         Text(text = data.invoice.invoiceNumber, style = MaterialTheme.typography.bodySmall)
         Spacer(modifier = Modifier.height(8.dp))
         HorizontalDivider(thickness = 1.dp)
         Spacer(modifier = Modifier.height(8.dp))
         data.items.forEach { item ->
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = "${item.itemName} x ${item.quantity}", style = MaterialTheme.typography.bodySmall)
-                Text(text = platform.formatCurrency(item.total, currency), style = MaterialTheme.typography.bodySmall)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "${item.itemName} x ${item.quantity}",
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Text(
+                    text = platform.formatCurrency(item.total, currency),
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
         }
         HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
         Text(
-            text = "Total: ${platform.formatCurrency(data.invoice.totalAmount, currency)}",
+            text = "${stringResource(Res.string.total)}: ${
+                platform.formatCurrency(
+                    data.invoice.totalAmount,
+                    currency
+                )
+            }",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.End)

@@ -11,8 +11,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import org.jetbrains.compose.resources.stringResource
-import com.example.invoicegenerator.generated.resources.Res
-import com.example.invoicegenerator.generated.resources.*
+import com.example.invoicegenerator.Res
+import com.example.invoicegenerator.*
+import com.example.invoicegenerator.create_invoice
+import com.example.invoicegenerator.welcome_title
+import com.example.invoicegenerator.welcome_subtitle
+import com.example.invoicegenerator.view_sample
 
 @Composable
 fun WelcomeScreen(

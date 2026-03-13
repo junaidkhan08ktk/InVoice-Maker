@@ -1,22 +1,29 @@
 package com.example.invoicegenerator
 
 import androidx.compose.runtime.Composable
+import com.example.invoicegenerator.data.entity.Business
+import com.example.invoicegenerator.data.entity.Customer
+import com.example.invoicegenerator.data.entity.Invoice
+import com.example.invoicegenerator.data.entity.InvoiceItem
+import com.example.invoicegenerator.domain.pdf.TemplateType
 
 interface Platform {
     val name: String
     fun shareFile(path: String, title: String)
     fun showToast(message: String)
     fun generateAndShareInvoice(
-        business: com.example.invoicegenerator.data.entity.Business,
-        customer: com.example.invoicegenerator.data.entity.Customer,
-        invoice: com.example.invoicegenerator.data.entity.Invoice,
-        items: List<com.example.invoicegenerator.data.entity.InvoiceItem>,
-        template: com.example.invoicegenerator.domain.pdf.TemplateType,
+        business: Business,
+        customer: Customer,
+        invoice: Invoice,
+        items: List<InvoiceItem>,
+        template: TemplateType,
         isPro: Boolean,
-        currency: String
+        currency: String,
+        labels: com.example.invoicegenerator.domain.pdf.PdfLabels
     )
     fun formatDate(timestamp: Long): String
     fun formatCurrency(amount: Double, currency: String): String
+    fun setLanguage(languageCode: String)
 }
 
 expect fun getPlatform(): Platform

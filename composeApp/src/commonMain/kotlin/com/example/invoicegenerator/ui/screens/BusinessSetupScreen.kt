@@ -13,13 +13,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import com.example.invoicegenerator.viewmodel.BusinessViewModel
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import com.example.invoicegenerator.Res
+import com.example.invoicegenerator.business_details
+import com.example.invoicegenerator.business_name_required
+import com.example.invoicegenerator.gstin_required
+import com.example.invoicegenerator.business_address
+import com.example.invoicegenerator.bussiness_name
+import com.example.invoicegenerator.email_optional
+import com.example.invoicegenerator.phone_optional
+import com.example.invoicegenerator.default_gst_rate
+import com.example.invoicegenerator.continue_button
+import com.example.invoicegenerator.ic_business
+import com.example.invoicegenerator.ic_email
+import com.example.invoicegenerator.ic_gst
+import com.example.invoicegenerator.ic_location
+import com.example.invoicegenerator.ic_phone
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BusinessSetupScreen(
     onSetupComplete: () -> Unit,
-    viewModel: BusinessViewModel = koinViewModel()
 ) {
+    val viewModel: BusinessViewModel = koinViewModel()
     var name by remember { mutableStateOf("") }
     var gstin by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
@@ -29,7 +46,7 @@ fun BusinessSetupScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Business Details") })
+            TopAppBar(title = { Text(stringResource(Res.string.business_details)) })
         }
     ) { padding ->
         Column(
@@ -43,48 +60,71 @@ fun BusinessSetupScreen(
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text("Business Name (Required)") },
+                label = { Text(stringResource(Res.string.business_name_required)) },
                 modifier = Modifier.fillMaxWidth(),
-                leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) }
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(Res.drawable.bussiness_name),
+                        contentDescription = null
+                    )
+                }
             )
 
             OutlinedTextField(
                 value = gstin,
                 onValueChange = { gstin = it },
-                label = { Text("GSTIN (Required)") },
+                label = { Text(stringResource(Res.string.gstin_required)) },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("e.g. 27AAACR1234A1Z5") }
+                placeholder = { Text("e.g. 27AAACR1234A1Z5") },
+                leadingIcon = {
+                    Icon(
+                        painterResource(Res.drawable.ic_gst),
+                        contentDescription = null
+                    )
+                }
+
             )
 
             OutlinedTextField(
                 value = address,
                 onValueChange = { address = it },
-                label = { Text("Business Address") },
+                label = { Text(stringResource(Res.string.business_address)) },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 3,
-                leadingIcon = { Icon(Icons.Default.LocationOn, contentDescription = null) }
+                leadingIcon = {
+                    Icon(
+                        painterResource(Res.drawable.ic_location),
+                        contentDescription = null
+                    )
+                }
             )
 
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email (Optional)") },
+                label = { Text(stringResource(Res.string.email_optional)) },
                 modifier = Modifier.fillMaxWidth(),
-                leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) }
+                leadingIcon = {  Icon(
+                    painterResource(Res.drawable.ic_email),
+                    contentDescription = null
+                ) }
             )
 
             OutlinedTextField(
                 value = phone,
                 onValueChange = { phone = it },
-                label = { Text("Phone (Optional)") },
+                label = { Text(stringResource(Res.string.phone_optional)) },
                 modifier = Modifier.fillMaxWidth(),
-                leadingIcon = { Icon(Icons.Default.Phone, contentDescription = null) }
+                leadingIcon = {  Icon(
+                    painterResource(Res.drawable.ic_phone),
+                    contentDescription = null
+                ) }
             )
 
             OutlinedTextField(
                 value = gstRate,
                 onValueChange = { gstRate = it },
-                label = { Text("Default GST Rate (%)") },
+                label = { Text(stringResource(Res.string.default_gst_rate)) },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("18") }
             )
@@ -110,7 +150,7 @@ fun BusinessSetupScreen(
                     .height(56.dp),
                 enabled = name.isNotBlank() && gstin.isNotBlank()
             ) {
-                Text("Continue")
+                Text(stringResource(Res.string.continue_button))
             }
         }
     }

@@ -64,6 +64,10 @@ class IOSPlatform : Platform {
         formatter.maximumFractionDigits = 2u
         return "$symbol${formatter.stringFromNumber(NSNumber(amount)) ?: "0.00"}"
     }
+
+    override fun setLanguage(languageCode: String) {
+        // iOS requires app restart or complex logic to change language at runtime
+    }
 }
 
 actual fun getPlatform(): Platform = IOSPlatform()

@@ -14,17 +14,29 @@ import com.example.invoicegenerator.ui.navigation.Screen
 import com.example.invoicegenerator.viewmodel.BusinessViewModel
 import com.example.invoicegenerator.viewmodel.SettingsViewModel
 import org.jetbrains.compose.resources.stringResource
-import com.example.invoicegenerator.generated.resources.Res
-import com.example.invoicegenerator.generated.resources.*
+import com.example.invoicegenerator.Res
+import com.example.invoicegenerator.*
+import com.example.invoicegenerator.settings
+import com.example.invoicegenerator.upgrade_pro
+import com.example.invoicegenerator.upgrade_desc
+import com.example.invoicegenerator.language_currency
+import com.example.invoicegenerator.business_profile
+import com.example.invoicegenerator.gstin
+import com.example.invoicegenerator.about
+import com.example.invoicegenerator.privacy_policy
+import com.example.invoicegenerator.terms_conditions
+import com.example.invoicegenerator.version
+import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onNavigateTo: (String) -> Unit,
     onEditBusiness: () -> Unit,
-    viewModel: BusinessViewModel = koinViewModel(),
-    settingsViewModel: SettingsViewModel = koinViewModel()
-) {
+
+    ) {
+    val viewModel: BusinessViewModel = koinViewModel()
+    val settingsViewModel: SettingsViewModel = koinViewModel()
     val businessProfile by viewModel.businessProfile.collectAsState()
     val currentLanguage by settingsViewModel.language.collectAsState(initial = "en")
     val currentCurrency by settingsViewModel.currency.collectAsState(initial = "USD")
@@ -33,7 +45,12 @@ fun SettingsScreen(
 
     Scaffold(
         topBar = { TopAppBar(title = { Text(stringResource(Res.string.settings)) }) },
-        bottomBar = { BottomNavigationBar(currentRoute = Screen.Settings.route, onNavigate = onNavigateTo) }
+        bottomBar = {
+            BottomNavigationBar(
+                currentRoute = Screen.Settings.route,
+                onNavigate = onNavigateTo
+            )
+        }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -43,6 +60,7 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Subscription Card
+          /*
             Card(
                 onClick = { onNavigateTo("paywall") },
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
@@ -51,11 +69,17 @@ fun SettingsScreen(
                     Icon(Icons.Default.Star, contentDescription = null)
                     Spacer(modifier = Modifier.width(16.dp))
                     Column {
-                        Text(text = stringResource(Res.string.upgrade_pro), style = MaterialTheme.typography.titleMedium)
-                        Text(text = stringResource(Res.string.upgrade_desc), style = MaterialTheme.typography.bodySmall)
+                        Text(
+                            text = stringResource(Res.string.upgrade_pro),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Text(
+                            text = stringResource(Res.string.upgrade_desc),
+                            style = MaterialTheme.typography.bodySmall
+                        )
                     }
                 }
-            }
+            }*/
 
             // App Settings
             Text(text = "App Settings", style = MaterialTheme.typography.titleMedium)
@@ -63,14 +87,27 @@ fun SettingsScreen(
                 ListItem(
                     headlineContent = { Text(stringResource(Res.string.language_currency)) },
                     supportingContent = { Text("$languageName ($currentCurrency)") },
-                    leadingContent = { Icon(Icons.Default.AccountCircle, contentDescription = null) },
-                    trailingContent = { Icon(Icons.Default.AccountCircle, contentDescription = null) },
+                    leadingContent = {
+                        Icon(
+                            painterResource(Res.drawable.ic_language_currency),
+                            contentDescription = null
+                        )
+                    },
+                    trailingContent = {
+                        Icon(
+                            Icons.Default.Add,
+                            contentDescription = null
+                        )
+                    },
                     modifier = Modifier.clickable { onNavigateTo(Screen.LanguageSelection.route) }
                 )
             }
 
             // Business Profile
-            Text(text = stringResource(Res.string.business_profile), style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = stringResource(Res.string.business_profile),
+                style = MaterialTheme.typography.titleMedium
+            )
             Card(modifier = Modifier.fillMaxWidth()) {
                 ListItem(
                     headlineContent = { Text(businessProfile?.name ?: "No Business Setup") },
@@ -86,7 +123,10 @@ fun SettingsScreen(
 
             // Legal & About
             val context = androidx.compose.ui.platform.LocalContext.current
-            Text(text = stringResource(Res.string.about), style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = stringResource(Res.string.about),
+                style = MaterialTheme.typography.titleMedium
+            )
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column {
                     ListItem(

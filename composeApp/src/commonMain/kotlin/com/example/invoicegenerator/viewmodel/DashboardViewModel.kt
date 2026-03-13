@@ -32,6 +32,18 @@ class DashboardViewModel(
             }
         }
     }
+
+    fun toggleInvoiceStatus(invoice: Invoice) {
+        viewModelScope.launch {
+            invoiceDao.updateInvoice(invoice.copy(isPaid = !invoice.isPaid))
+        }
+    }
+
+    fun deleteInvoice(invoice: Invoice) {
+        viewModelScope.launch {
+            invoiceDao.deleteInvoice(invoice)
+        }
+    }
 }
 
 data class DashboardStats(

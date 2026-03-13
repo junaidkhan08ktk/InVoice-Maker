@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,8 +18,9 @@ import com.example.invoicegenerator.ui.navigation.Screen
 import com.example.invoicegenerator.viewmodel.DashboardViewModel
 import com.example.invoicegenerator.viewmodel.SettingsViewModel
 import org.jetbrains.compose.resources.stringResource
-import com.example.invoicegenerator.generated.resources.Res
-import com.example.invoicegenerator.generated.resources.*
+import com.example.invoicegenerator.Res
+import com.example.invoicegenerator.*
+import com.example.invoicegenerator.invoices
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,7 +79,13 @@ fun InvoicesListScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(filteredInvoices) { invoice ->
-                    InvoiceItemRow(invoice, currency, onClick = { onInvoiceClick(invoice.id) })
+                    InvoiceItemRow(
+                        invoice,
+                        currency,
+                        onClick = { onInvoiceClick(invoice.id) },
+                        onStatusChange = { viewModel.toggleInvoiceStatus(invoice) },
+                        onDelete = { viewModel.deleteInvoice(invoice) }
+                    )
                 }
             }
         }

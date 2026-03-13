@@ -1,5 +1,6 @@
 package com.example.invoicegenerator.ui.screens
 
+import androidx.compose.foundation.background
 import com.example.invoicegenerator.getPlatform
 
 import androidx.compose.foundation.clickable
@@ -16,24 +17,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import com.example.invoicegenerator.data.entity.Invoice
-import com.example.invoicegenerator.generated.resources.Res
-import com.example.invoicegenerator.generated.resources.customers
-import com.example.invoicegenerator.generated.resources.dashboard
-import com.example.invoicegenerator.generated.resources.invoices
-import com.example.invoicegenerator.generated.resources.items
-import com.example.invoicegenerator.generated.resources.new_invoice
-import com.example.invoicegenerator.generated.resources.no_invoices
-import com.example.invoicegenerator.generated.resources.paid
-import com.example.invoicegenerator.generated.resources.recent_invoices
-import com.example.invoicegenerator.generated.resources.sales_overview
-import com.example.invoicegenerator.generated.resources.settings
-import com.example.invoicegenerator.generated.resources.this_month
-import com.example.invoicegenerator.generated.resources.unpaid
-import com.example.invoicegenerator.generated.resources.view_all
+import com.example.invoicegenerator.Res
+import com.example.invoicegenerator.*
+import com.example.invoicegenerator.dashboard
+import com.example.invoicegenerator.new_invoice
+import com.example.invoicegenerator.sales_overview
+import com.example.invoicegenerator.this_month
+import com.example.invoicegenerator.paid
+import com.example.invoicegenerator.unpaid
+import com.example.invoicegenerator.recent_invoices
+import com.example.invoicegenerator.view_all
+import com.example.invoicegenerator.no_invoices
+import com.example.invoicegenerator.invoices
+import com.example.invoicegenerator.customers
+import com.example.invoicegenerator.items
+import com.example.invoicegenerator.settings
+import com.example.invoicegenerator.inv_number_prefix
 import com.example.invoicegenerator.ui.navigation.Screen
 import com.example.invoicegenerator.viewmodel.DashboardViewModel
 import org.jetbrains.compose.resources.stringResource
 import com.example.invoicegenerator.viewmodel.SettingsViewModel
+import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -142,7 +146,12 @@ fun DashboardScreen(
                 }
             } else {
                 items(stats.recentInvoices) { invoice ->
-                    InvoiceItemRow(invoice, currency, onClick = { onNavigateTo(Screen.InvoicePreview.createRoute(invoice.id)) })
+                    InvoiceItemRow(
+                        invoice,
+                        currency,
+                        onClick = { onNavigateTo(Screen.InvoicePreview.createRoute(invoice.id)) },
+                        onStatusChange = { viewModel.toggleInvoiceStatus(invoice) }
+                    )
                 }
             }
         }
@@ -165,17 +174,31 @@ fun StatsCard(
             Icon(icon, contentDescription = null, modifier = Modifier.size(24.dp))
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = title, style = MaterialTheme.typography.labelMedium)
-            Text(text = value, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+            Text(
+                text = value,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
 
 @Composable
-fun InvoiceItemRow(invoice: Invoice, currency: String, onClick: () -> Unit = {}) {
+fun InvoiceItemRow(
+    invoice: Invoice,
+    currency: String,
+    onClick: () -> Unit = {},
+    onStatusChange: () -> Unit = {},
+    onDelete: (() -> Unit)? = null
+) {
     Card(
         modifier = Modifier.fillMaxWidth().clickable { onClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(
+                alpha = 0.5f
+            )
+        )
     ) {
         Row(
             modifier = Modifier
@@ -184,21 +207,38 @@ fun InvoiceItemRow(invoice: Invoice, currency: String, onClick: () -> Unit = {})
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
-                Text(text = "Inv #${invoice.invoiceNumber}", fontWeight = FontWeight.Bold)
-                Text(text = getPlatform().formatCurrency(invoice.totalAmount, currency), style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = "${stringResource(Res.string.inv_number_prefix)}${invoice.invoiceNumber}",
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = getPlatform().formatCurrency(invoice.totalAmount, currency),
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
             if (invoice.isPaid) {
                 SuggestionChip(
-                    onClick = {},
+                    onClick = onStatusChange,
                     label = { Text(stringResource(Res.string.paid)) },
-                    colors = SuggestionChipDefaults.suggestionChipColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+                    colors = SuggestionChipDefaults.suggestionChipColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+                    border = null
                 )
             } else {
                 SuggestionChip(
-                    onClick = {},
+                    onClick = onStatusChange,
                     label = { Text(stringResource(Res.string.unpaid)) },
-                    colors = SuggestionChipDefaults.suggestionChipColors(containerColor = MaterialTheme.colorScheme.errorContainer)
+                    colors = SuggestionChipDefaults.suggestionChipColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+                    border = null
                 )
+            }
+            if (onDelete != null) {
+                IconButton(onClick = onDelete) {
+                    Icon(
+                        Icons.Default.Delete,
+                        contentDescription = "Delete Invoice",
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
             }
         }
     }
@@ -207,27 +247,33 @@ fun InvoiceItemRow(invoice: Invoice, currency: String, onClick: () -> Unit = {})
 @Composable
 fun BottomNavigationBar(currentRoute: String, onNavigate: (String) -> Unit) {
     NavigationBar {
-        val isInvoicesSelected = currentRoute == Screen.Dashboard.route || currentRoute == Screen.Invoices.route
+        val isInvoicesSelected =
+            currentRoute == Screen.Dashboard.route || currentRoute == Screen.Invoices.route
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Create, contentDescription = null) },
+            icon = { Icon(painterResource(Res.drawable.ic_invoice_bn), contentDescription = null) },
             label = { Text(stringResource(Res.string.invoices)) },
             selected = isInvoicesSelected,
             onClick = { onNavigate(Screen.Dashboard.route) }
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Person, contentDescription = null) },
+            icon = {
+                Icon(
+                    painterResource(Res.drawable.ic_customer_bn),
+                    contentDescription = null
+                )
+            },
             label = { Text(stringResource(Res.string.customers)) },
             selected = currentRoute == Screen.Customers.route,
             onClick = { onNavigate(Screen.Customers.route) }
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Default.AccountCircle, contentDescription = null) },
+            icon = { Icon(painterResource(Res.drawable.ic_items), contentDescription = null) },
             label = { Text(stringResource(Res.string.items)) },
             selected = currentRoute == Screen.Items.route,
             onClick = { onNavigate(Screen.Items.route) }
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Settings, contentDescription = null) },
+            icon = { Icon(painterResource(Res.drawable.ic_setting), contentDescription = null) },
             label = { Text(stringResource(Res.string.settings)) },
             selected = currentRoute == Screen.Settings.route,
             onClick = { onNavigate(Screen.Settings.route) }

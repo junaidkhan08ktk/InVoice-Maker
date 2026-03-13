@@ -45,7 +45,8 @@ class AndroidPlatform(private val context: Context) : Platform {
         items: List<InvoiceItem>,
         template: TemplateType,
         isPro: Boolean,
-        currency: String
+        currency: String,
+        labels: com.example.invoicegenerator.domain.pdf.PdfLabels
     ) {
         val pdfGen = PdfGenerator(context)
         val symbol = getCurrencySymbol(currency)
@@ -56,7 +57,8 @@ class AndroidPlatform(private val context: Context) : Platform {
             items,
             template,
             showWatermark = !isPro,
-            currencySymbol = symbol
+            currencySymbol = symbol,
+            labels = labels
         )
         if (file != null) {
             shareFile(file.absolutePath, "Share Invoice")
@@ -85,6 +87,11 @@ class AndroidPlatform(private val context: Context) : Platform {
     override fun formatCurrency(amount: Double, currency: String): String {
         val symbol = getCurrencySymbol(currency)
         return "$symbol${String.format("%.2f", amount)}"
+    }
+
+    override fun setLanguage(languageCode: String) {
+        val appLocale: androidx.core.os.LocaleListCompat = androidx.core.os.LocaleListCompat.forLanguageTags(languageCode)
+        androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(appLocale)
     }
 }
 
