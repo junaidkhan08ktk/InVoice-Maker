@@ -13,6 +13,7 @@ plugins {
 
 compose.resources {
     packageOfResClass = "com.example.invoicegenerator"
+    publicResClass = true
 }
 
 kotlin {
@@ -36,6 +37,7 @@ kotlin {
     
     sourceSets {
         androidMain.dependencies {
+            implementation(libs.androidx.appcompat)
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.lifecycle.runtime.ktx)

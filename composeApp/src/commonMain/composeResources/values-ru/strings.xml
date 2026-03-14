@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Создатель счетов</string>
+    <string name="welcome_title">Создайте счет за 30 секунд</string>
+    <string name="welcome_subtitle">Профессионально, юридически правильно и без интернета.</string>
+    <string name="create_invoice">Создать счет</string>
+    <string name="view_sample">Посмотреть образец счета</string>
+    <string name="dashboard">Панель управления</string>
+    <string name="invoices">Счета</string>
+    <string name="customers">Клиенты</string>
+    <string name="items">Товары</string>
+    <string name="settings">Настройки</string>
+    <string name="new_invoice">Новый счет</string>
+    <string name="sales_overview">Обзор продаж</string>
+    <string name="this_month">В этом месяце</string>
+    <string name="paid">Оплачено</string>
+    <string name="unpaid">Не оплачено</string>
+    <string name="recent_invoices">Последние счета</string>
+    <string name="view_all">Смотреть все</string>
+    <string name="no_invoices">Счета ещё не созданы.</string>
+    <string name="upgrade_pro">Перейти на Pro</string>
+    <string name="upgrade_desc">Неограниченные счета, убрать водяной знак и многое другое.</string>
+    <string name="business_profile">Профиль компании</string>
+    <string name="language_currency">Язык и валюта</string>
+    <string name="about">О приложении</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="terms_conditions">Условия использования</string>
+    <string name="version">Версия 1.0</string>
+    <string name="select_language">Выберите язык</string>
+    <string name="tax_rate">Ставка налога (%)</string>
+    <string name="gstin">ИНН</string>
+</resources>

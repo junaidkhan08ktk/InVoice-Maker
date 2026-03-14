@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Rechnungsgenerator</string>
+    <string name="welcome_title">Erstellen Sie Rechnungen in 30 Sekunden</string>
+    <string name="welcome_subtitle">Professionell, rechtlich konform und offline-first.</string>
+    <string name="create_invoice">Rechnung erstellen</string>
+    <string name="view_sample">Musterrechnung anzeigen</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="invoices">Rechnungen</string>
+    <string name="customers">Kunden</string>
+    <string name="items">Artikel</string>
+    <string name="settings">Einstellungen</string>
+    <string name="new_invoice">Neue Rechnung</string>
+    <string name="sales_overview">Verkaufsübersicht</string>
+    <string name="this_month">Diesen Monat</string>
+    <string name="paid">Bezahlt</string>
+    <string name="unpaid">Unbezahlt</string>
+    <string name="recent_invoices">Letzte Rechnungen</string>
+    <string name="view_all">Alle anzeigen</string>
+    <string name="no_invoices">Noch keine Rechnungen erstellt.</string>
+    <string name="upgrade_pro">Auf Pro upgraden</string>
+    <string name="upgrade_desc">Unbegrenzte Rechnungen, Wasserzeichen entfernen und mehr.</string>
+    <string name="business_profile">Unternehmensprofil</string>
+    <string name="language_currency">Sprache &amp; Währung</string>
+    <string name="about">Über</string>
+    <string name="privacy_policy">Datenschutzerklärung</string>
+    <string name="terms_conditions">Nutzungsbedingungen</string>
+    <string name="version">Version 1.0</string>
+    <string name="select_language">Sprache auswählen</string>
+    <string name="tax_rate">Steuersatz (%)</string>
+    <string name="gstin">Steuernummer</string>
+</resources>

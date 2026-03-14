@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Gerador de Faturas</string>
+    <string name="welcome_title">Crie faturas em 30 segundos</string>
+    <string name="welcome_subtitle">Profissional, legalmente compatível e offline-first.</string>
+    <string name="create_invoice">Criar Fatura</string>
+    <string name="view_sample">Ver Fatura de Exemplo</string>
+    <string name="dashboard">Painel</string>
+    <string name="invoices">Faturas</string>
+    <string name="customers">Clientes</string>
+    <string name="items">Itens</string>
+    <string name="settings">Configurações</string>
+    <string name="new_invoice">Nova Fatura</string>
+    <string name="sales_overview">Visão Geral de Vendas</string>
+    <string name="this_month">Este Mês</string>
+    <string name="paid">Pago</string>
+    <string name="unpaid">Não Pago</string>
+    <string name="recent_invoices">Faturas Recentes</string>
+    <string name="view_all">Ver Tudo</string>
+    <string name="no_invoices">Nenhuma fatura criada ainda.</string>
+    <string name="upgrade_pro">Atualizar para Pro</string>
+    <string name="upgrade_desc">Faturas ilimitadas, remover marca d\'água e mais.</string>
+    <string name="business_profile">Perfil do Negócio</string>
+    <string name="language_currency">Idioma e Moeda</string>
+    <string name="about">Sobre</string>
+    <string name="privacy_policy">Política de Privacidade</string>
+    <string name="terms_conditions">Termos e Condições</string>
+    <string name="version">Versão 1.0</string>
+    <string name="select_language">Selecionar Idioma</string>
+    <string name="tax_rate">Taxa de Imposto (%)</string>
+    <string name="gstin">CNPJ/CPF</string>
+</resources>

@@ -138,6 +138,18 @@ class InvoiceViewModel(
         }
     }
 
+    fun deleteItem(item: Item) {
+        viewModelScope.launch {
+            itemDao.deleteItem(item)
+        }
+    }
+
+    fun deleteCustomer(customer: Customer) {
+        viewModelScope.launch {
+            customerDao.deleteCustomer(customer)
+        }
+    }
+
     fun getInvoiceById(id: Long) = flow {
         if (id == -1L) {
             emit(getSampleInvoice())

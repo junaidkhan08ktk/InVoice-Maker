@@ -45,4 +45,5 @@ class BusinessViewModel(
             businessDao.insertBusiness(business)
         }
     }
+
 }

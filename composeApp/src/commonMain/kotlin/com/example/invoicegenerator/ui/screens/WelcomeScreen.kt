@@ -10,6 +10,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+import org.jetbrains.compose.resources.stringResource
+import com.example.invoicegenerator.Res
+import com.example.invoicegenerator.*
+import com.example.invoicegenerator.create_invoice
+import com.example.invoicegenerator.welcome_title
+import com.example.invoicegenerator.welcome_subtitle
+import com.example.invoicegenerator.view_sample
+
 @Composable
 fun WelcomeScreen(
     onCreateInvoice: () -> Unit,
@@ -23,7 +31,7 @@ fun WelcomeScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Create GST Invoices in 30 Seconds",
+            text = stringResource(Res.string.welcome_title),
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
@@ -32,7 +40,7 @@ fun WelcomeScreen(
         )
         
         Text(
-            text = "Professional, legally compliant, and offline-first.",
+            text = stringResource(Res.string.welcome_subtitle),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -46,7 +54,7 @@ fun WelcomeScreen(
                 .height(56.dp),
             shape = MaterialTheme.shapes.medium
         ) {
-            Text("Create Invoice", fontSize = 18.sp)
+            Text(stringResource(Res.string.create_invoice), fontSize = 18.sp)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -58,7 +66,7 @@ fun WelcomeScreen(
                 .height(56.dp),
             shape = MaterialTheme.shapes.medium
         ) {
-            Text("View Sample Invoice", fontSize = 18.sp)
+            Text(stringResource(Res.string.view_sample), fontSize = 18.sp)
         }
     }
 }

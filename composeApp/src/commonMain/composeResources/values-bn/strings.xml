@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">ইনভয়েস মেকার</string>
+    <string name="welcome_title">৩০ সেকেন্ডে ইনভয়েস তৈরি করুন</string>
+    <string name="welcome_subtitle">পেশাদার, আইনত সম্মত এবং অফলাইন-ফার্স্ট।</string>
+    <string name="create_invoice">ইনভয়েস তৈরি করুন</string>
+    <string name="view_sample">নমুনা ইনভয়েস দেখুন</string>
+    <string name="dashboard">ড্যাশবোর্ড</string>
+    <string name="invoices">ইনভয়েসসমূহ</string>
+    <string name="customers">গ্রাহকগণ</string>
+    <string name="items">পণ্যসমূহ</string>
+    <string name="settings">সেটিংস</string>
+    <string name="new_invoice">নতুন ইনভয়েস</string>
+    <string name="sales_overview">বিক্রয় ওভারভিউ</string>
+    <string name="this_month">এই মাস</string>
+    <string name="paid">পরিশোধিত</string>
+    <string name="unpaid">অপরিশোধিত</string>
+    <string name="recent_invoices">সাম্প্রতিক ইনভয়েসসমূহ</string>
+    <string name="view_all">সব দেখুন</string>
+    <string name="no_invoices">এখনও কোনো ইনভয়েস তৈরি করা হয়নি।</string>
+    <string name="upgrade_pro">প্রোতে আপগ্রেড করুন</string>
+    <string name="upgrade_desc">অগণিত ইনভয়েস, জলছাপ সরান এবং আরও অনেক কিছু।</string>
+    <string name="business_profile">ব্যবসা প্রোফাইল</string>
+    <string name="language_currency">ভাষা ও মুদ্রা</string>
+    <string name="about">সম্পর্কে</string>
+    <string name="privacy_policy">গোপনীয়তা নীতি</string>
+    <string name="terms_conditions">শর্তাবলী</string>
+    <string name="version">ভার্সন ১.০</string>
+    <string name="select_language">ভাষা নির্বাচন করুন</string>
+    <string name="tax_rate">ট্যাক্স রেট (%)</string>
+    <string name="gstin">জিএসটিআইএন</string>
+</resources>

@@ -19,14 +19,23 @@ import com.example.invoicegenerator.ui.screens.ItemsScreen
 import com.example.invoicegenerator.ui.screens.PaywallScreen
 import com.example.invoicegenerator.ui.screens.SettingsScreen
 import com.example.invoicegenerator.ui.screens.WelcomeScreen
+import com.example.invoicegenerator.ui.screens.LanguageSelectionScreen
 import com.example.invoicegenerator.viewmodel.BusinessViewModel
+import com.example.invoicegenerator.viewmodel.SettingsViewModel
 
 @Composable
-fun NavGraph(
-    navController: NavHostController = rememberNavController(),
-    businessViewModel: BusinessViewModel = koinViewModel()
-) {
+fun NavGraph() {
+    val navController: NavHostController = rememberNavController()
+    val businessViewModel: BusinessViewModel = koinViewModel()
+    val settingsViewModel: SettingsViewModel = koinViewModel()
     val businessProfile by businessViewModel.businessProfile.collectAsState()
+    val language by settingsViewModel.language.collectAsState(initial = null)
+
+    androidx.compose.runtime.LaunchedEffect(language) {
+        language?.let {
+            com.example.invoicegenerator.getPlatform().setLanguage(it)
+        }
+    }
 
     NavHost(
         navController = navController,
@@ -35,7 +44,9 @@ fun NavGraph(
         composable(Screen.Welcome.route) {
             WelcomeScreen(
                 onCreateInvoice = {
-                    if (businessProfile == null) {
+                    if (language == null) {
+                        navController.navigate(Screen.LanguageSelection.route)
+                    } else if (businessProfile == null) {
                         navController.navigate(Screen.BusinessSetup.route)
                     } else {
                         navController.navigate(Screen.CreateInvoice.route)
@@ -43,6 +54,20 @@ fun NavGraph(
                 },
                 onViewSample = {
                     navController.navigate(Screen.InvoicePreview.createRoute(-1L))
+                }
+            )
+        }
+
+        composable(Screen.LanguageSelection.route) {
+            LanguageSelectionScreen(
+                onLanguageSelected = {
+                    if (businessProfile == null) {
+                        navController.navigate(Screen.BusinessSetup.route) {
+                            popUpTo(Screen.Welcome.route) { inclusive = false }
+                        }
+                    } else {
+                        navController.popBackStack()
+                    }
                 }
             )
         }
@@ -60,7 +85,7 @@ fun NavGraph(
         composable(Screen.Dashboard.route) {
             DashboardScreen(
                 onNewInvoice = { navController.navigate(Screen.CreateInvoice.route) },
-                onNavigateTo = { route -> 
+                onNavigateTo = { route ->
                     navController.navigate(route) {
                         popUpTo(navController.graph.findStartDestination().id) { saveState = true }
                         launchSingleTop = true
@@ -72,7 +97,7 @@ fun NavGraph(
 
         composable(Screen.CreateInvoice.route) {
             InvoiceCreateScreen(
-                onPreview = { invoiceId -> 
+                onPreview = { invoiceId ->
                     navController.navigate(Screen.InvoicePreview.createRoute(invoiceId))
                 },
                 onBack = { navController.popBackStack() }
@@ -90,7 +115,7 @@ fun NavGraph(
             InvoicesListScreen(
                 onInvoiceClick = { id -> navController.navigate(Screen.InvoicePreview.createRoute(id)) },
                 onNewInvoice = { navController.navigate(Screen.CreateInvoice.route) },
-                onNavigateTo = { route -> 
+                onNavigateTo = { route ->
                     navController.navigate(route) {
                         popUpTo(navController.graph.findStartDestination().id) { saveState = true }
                         launchSingleTop = true
@@ -102,7 +127,7 @@ fun NavGraph(
 
         composable(Screen.Customers.route) {
             CustomersScreen(
-                onNavigateTo = { route -> 
+                onNavigateTo = { route ->
                     navController.navigate(route) {
                         popUpTo(navController.graph.findStartDestination().id) { saveState = true }
                         launchSingleTop = true
@@ -114,7 +139,7 @@ fun NavGraph(
 
         composable(Screen.Items.route) {
             ItemsScreen(
-                onNavigateTo = { route -> 
+                onNavigateTo = { route ->
                     navController.navigate(route) {
                         popUpTo(navController.graph.findStartDestination().id) { saveState = true }
                         launchSingleTop = true
@@ -126,12 +151,14 @@ fun NavGraph(
 
         composable(Screen.Settings.route) {
             SettingsScreen(
-                onNavigateTo = { route -> 
+                onNavigateTo = { route ->
                     if (route == "paywall") {
                         navController.navigate("paywall")
                     } else {
                         navController.navigate(route) {
-                            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
                             launchSingleTop = true
                             restoreState = true
                         }
