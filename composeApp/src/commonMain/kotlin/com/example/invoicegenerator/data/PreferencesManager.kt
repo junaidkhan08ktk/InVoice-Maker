@@ -15,7 +15,8 @@ class PreferencesManager(private val dataStore: DataStore<Preferences>) {
     private val CURRENCY_KEY = stringPreferencesKey("currency")
 
     val isPro: Flow<Boolean> = dataStore.data.map { preferences ->
-        preferences[IS_PRO_KEY] ?: false
+        //preferences[IS_PRO_KEY] ?: false
+        preferences[IS_PRO_KEY] ?: true
     }
 
     val language: Flow<String?> = dataStore.data.map { preferences ->
