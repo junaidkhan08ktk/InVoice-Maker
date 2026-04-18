@@ -12,7 +12,6 @@ composeBom = "2024.09.00"
 room = "2.7.0-alpha11"
 hilt = "2.51.1"
 navigationCompose = "2.8.3"
-billing = "7.1.1"
 ksp = "2.0.21-1.0.27"
 koin = "4.0.0"
 androidx-lifecycle = "2.8.3"
@@ -47,7 +46,6 @@ androidx-sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.2.0" }
-google-billing = { group = "com.android.billingclient", name = "billing", version.ref = "billing" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }

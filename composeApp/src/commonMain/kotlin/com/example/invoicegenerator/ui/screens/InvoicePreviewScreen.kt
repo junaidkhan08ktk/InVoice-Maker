@@ -59,7 +59,6 @@ fun InvoicePreviewScreen(
     val businessViewModel: BusinessViewModel = koinViewModel()
     val settingsViewModel: SettingsViewModel = koinViewModel()
     val platform = getPlatform()
-    val isPro by viewModel.isPro.collectAsState(initial = false)
     val invoiceData by viewModel.getInvoiceById(invoiceId).collectAsState(initial = null)
     val businessProfile by businessViewModel.businessProfile.collectAsState()
     val currency by settingsViewModel.currency.collectAsState(initial = "USD")
@@ -103,7 +102,7 @@ fun InvoicePreviewScreen(
                                 invoice = d.invoice,
                                 items = d.items,
                                 template = selectedTemplate,
-                                isPro = isPro,
+                                isPro = true,
                                 currency = currency,
                                 labels = pdfLabels
                             )
@@ -172,17 +171,6 @@ fun InvoicePreviewScreen(
                             }
                         }
 
-                        if (!isPro) {
-                            Text(
-                                text = stringResource(Res.string.free_version_watermark),
-                                modifier = Modifier
-                                    .align(Alignment.Center)
-                                    .graphicsLayer(alpha = 0.1f, rotationZ = -45f),
-                                style = MaterialTheme.typography.displaySmall,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
-                        }
                     }
                 }
 
@@ -199,7 +187,7 @@ fun InvoicePreviewScreen(
                                 invoice = d.invoice,
                                 items = d.items,
                                 template = selectedTemplate,
-                                isPro = isPro,
+                                isPro = true,
                                 currency = currency,
                                 labels = pdfLabels
                             )

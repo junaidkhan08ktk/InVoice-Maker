@@ -16,7 +16,6 @@ import com.example.invoicegenerator.ui.screens.InvoiceCreateScreen
 import com.example.invoicegenerator.ui.screens.InvoicePreviewScreen
 import com.example.invoicegenerator.ui.screens.InvoicesListScreen
 import com.example.invoicegenerator.ui.screens.ItemsScreen
-import com.example.invoicegenerator.ui.screens.PaywallScreen
 import com.example.invoicegenerator.ui.screens.SettingsScreen
 import com.example.invoicegenerator.ui.screens.WelcomeScreen
 import com.example.invoicegenerator.ui.screens.LanguageSelectionScreen
@@ -152,16 +151,12 @@ fun NavGraph() {
         composable(Screen.Settings.route) {
             SettingsScreen(
                 onNavigateTo = { route ->
-                    if (route == "paywall") {
-                        navController.navigate("paywall")
-                    } else {
-                        navController.navigate(route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
+                    navController.navigate(route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
                         }
+                        launchSingleTop = true
+                        restoreState = true
                     }
                 },
                 onEditBusiness = {
@@ -170,12 +165,6 @@ fun NavGraph() {
             )
         }
 
-        composable("paywall") {
-            PaywallScreen(
-                onBack = { navController.popBackStack() },
-                onPurchasePro = { /* TODO: Implement Billing Purchase */ },
-                onPurchaseLifetime = { /* TODO: Implement Billing Purchase */ }
-            )
-        }
+
     }
 }

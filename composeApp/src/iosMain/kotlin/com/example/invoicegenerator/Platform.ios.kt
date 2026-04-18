@@ -68,6 +68,15 @@ class IOSPlatform : Platform {
     override fun setLanguage(languageCode: String) {
         // iOS requires app restart or complex logic to change language at runtime
     }
+
+    override fun rateApp() {
+        val appId = "YOUR_APP_ID" // TODO: Replace with real App ID
+        val urlString = "itms-apps://itunes.apple.com/app/id$appId?action=write-review"
+        val url = platform.Foundation.NSURL.URLWithString(urlString)
+        if (url != null) {
+            platform.UIKit.UIApplication.sharedApplication.openURL(url)
+        }
+    }
 }
 
 actual fun getPlatform(): Platform = IOSPlatform()

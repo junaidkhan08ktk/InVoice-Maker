@@ -93,6 +93,21 @@ class AndroidPlatform(private val context: Context) : Platform {
         val appLocale: androidx.core.os.LocaleListCompat = androidx.core.os.LocaleListCompat.forLanguageTags(languageCode)
         androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(appLocale)
     }
+
+    override fun rateApp() {
+        val packageName = context.packageName
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse("market://details?id=$packageName")).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://play.google.com/store/apps/details?id=$packageName")).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+        }
+    }
 }
 
 actual fun getPlatform(): Platform = AndroidPlatform(InvoiceApplication.instance.applicationContext)

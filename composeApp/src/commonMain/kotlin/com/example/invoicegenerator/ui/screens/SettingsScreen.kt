@@ -17,8 +17,6 @@ import org.jetbrains.compose.resources.stringResource
 import com.example.invoicegenerator.Res
 import com.example.invoicegenerator.*
 import com.example.invoicegenerator.settings
-import com.example.invoicegenerator.upgrade_pro
-import com.example.invoicegenerator.upgrade_desc
 import com.example.invoicegenerator.language_currency
 import com.example.invoicegenerator.business_profile
 import com.example.invoicegenerator.gstin
@@ -26,6 +24,7 @@ import com.example.invoicegenerator.about
 import com.example.invoicegenerator.privacy_policy
 import com.example.invoicegenerator.terms_conditions
 import com.example.invoicegenerator.version
+import com.example.invoicegenerator.rate_app
 import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,27 +58,7 @@ fun SettingsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Subscription Card
-          /*
-            Card(
-                onClick = { onNavigateTo("paywall") },
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
-            ) {
-                Row(modifier = Modifier.padding(16.dp)) {
-                    Icon(Icons.Default.Star, contentDescription = null)
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Column {
-                        Text(
-                            text = stringResource(Res.string.upgrade_pro),
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        Text(
-                            text = stringResource(Res.string.upgrade_desc),
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                }
-            }*/
+
 
             // App Settings
             Text(text = "App Settings", style = MaterialTheme.typography.titleMedium)
@@ -135,21 +114,18 @@ fun SettingsScreen(
                         modifier = Modifier.clickable {
                             val intent = android.content.Intent(
                                 android.content.Intent.ACTION_VIEW,
-                                "https://example.com/privacy".toUri()
+                                "https://sites.google.com/d/1lGZSQ6bljzkqu_GIf7Di3DSJrVaqBdDC/p/1b6HC2swyULjSHGH2rFlRJhjuAXsAL5gU/edit".toUri()
                             )
                             context.startActivity(intent)
                         }
                     )
                     HorizontalDivider()
+
                     ListItem(
-                        headlineContent = { Text(stringResource(Res.string.terms_conditions)) },
-                        leadingContent = { Icon(Icons.Default.Info, contentDescription = null) },
+                        headlineContent = { Text(stringResource(Res.string.rate_app)) },
+                        leadingContent = { Icon(Icons.Default.Star, contentDescription = null) },
                         modifier = Modifier.clickable {
-                            val intent = android.content.Intent(
-                                android.content.Intent.ACTION_VIEW,
-                                "https://example.com/terms".toUri()
-                            )
-                            context.startActivity(intent)
+                            getPlatform().rateApp()
                         }
                     )
                 }

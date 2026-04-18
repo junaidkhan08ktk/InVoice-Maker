@@ -45,7 +45,6 @@ kotlin {
             implementation(libs.koin.android)
             
             // Still using some Android specifics for now
-            implementation(libs.google.billing)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -84,7 +83,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.invoicegenerator"
+        applicationId = "com.invoxa.invoicegenerator"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -100,6 +99,12 @@ android {
             isMinifyEnabled = false
         }
     }
+    bundle{
+        language {
+            enableSplit = false
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11

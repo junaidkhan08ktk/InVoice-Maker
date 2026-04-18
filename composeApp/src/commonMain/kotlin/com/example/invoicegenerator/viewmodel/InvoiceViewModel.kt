@@ -16,8 +16,6 @@ class InvoiceViewModel(
     private val preferencesManager: com.example.invoicegenerator.data.PreferencesManager
 ) : ViewModel() {
 
-    val isPro = preferencesManager.isPro
-
     private val _customers = MutableStateFlow<List<Customer>>(emptyList())
     val customers = _customers.asStateFlow()
 

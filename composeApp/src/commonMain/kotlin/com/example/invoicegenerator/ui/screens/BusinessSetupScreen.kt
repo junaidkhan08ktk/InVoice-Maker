@@ -3,10 +3,6 @@ package com.example.invoicegenerator.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -25,7 +21,6 @@ import com.example.invoicegenerator.email_optional
 import com.example.invoicegenerator.phone_optional
 import com.example.invoicegenerator.default_gst_rate
 import com.example.invoicegenerator.continue_button
-import com.example.invoicegenerator.ic_business
 import com.example.invoicegenerator.ic_email
 import com.example.invoicegenerator.ic_gst
 import com.example.invoicegenerator.ic_location

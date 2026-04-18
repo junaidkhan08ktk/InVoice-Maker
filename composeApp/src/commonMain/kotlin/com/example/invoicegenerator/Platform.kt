@@ -24,6 +24,7 @@ interface Platform {
     fun formatDate(timestamp: Long): String
     fun formatCurrency(amount: Double, currency: String): String
     fun setLanguage(languageCode: String)
+    fun rateApp()
 }
 
 expect fun getPlatform(): Platform
