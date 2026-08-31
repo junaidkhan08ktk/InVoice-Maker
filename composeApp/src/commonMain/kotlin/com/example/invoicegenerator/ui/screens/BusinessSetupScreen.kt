@@ -32,12 +32,26 @@ fun BusinessSetupScreen(
     onSetupComplete: () -> Unit,
 ) {
     val viewModel: BusinessViewModel = koinViewModel()
-    var name by remember { mutableStateOf("") }
-    var gstin by remember { mutableStateOf("") }
-    var address by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var phone by remember { mutableStateOf("") }
-    var gstRate by remember { mutableStateOf("18") }
+    val businessProfile by viewModel.businessProfile.collectAsState()
+
+    var name by remember { mutableStateOf(businessProfile?.name ?: "") }
+    var gstin by remember { mutableStateOf(businessProfile?.gstin ?: "") }
+    var address by remember { mutableStateOf(businessProfile?.address ?: "") }
+    var email by remember { mutableStateOf(businessProfile?.email ?: "") }
+    var phone by remember { mutableStateOf(businessProfile?.phone ?: "") }
+    var gstRate by remember { mutableStateOf(businessProfile?.defaultGstRate?.toString() ?: "18") }
+
+    LaunchedEffect(businessProfile) {
+        businessProfile?.let {
+            if (name.isEmpty()) name = it.name
+            if (gstin.isEmpty()) gstin = it.gstin
+            if (address.isEmpty()) address = it.address
+            if (email.isEmpty()) email = it.email ?: ""
+            if (phone.isEmpty()) phone = it.phone ?: ""
+            gstRate = it.defaultGstRate.toString()
+        }
+    }
+
 
     Scaffold(
         topBar = {

@@ -28,12 +28,18 @@ class InvoiceViewModel(
     private val _invoiceItems = MutableStateFlow<List<InvoiceItemState>>(emptyList())
     val invoiceItems = _invoiceItems.asStateFlow()
 
+    private val _allInvoices = MutableStateFlow<List<Invoice>>(emptyList())
+    val allInvoices = _allInvoices.asStateFlow()
+
     init {
         viewModelScope.launch {
             customerDao.getAllCustomers().collect { _customers.value = it }
         }
         viewModelScope.launch {
             itemDao.getAllItems().collect { _items.value = it }
+        }
+        viewModelScope.launch {
+            invoiceDao.getAllInvoices().collect { _allInvoices.value = it }
         }
     }
 
@@ -124,15 +130,27 @@ class InvoiceViewModel(
         }
     }
 
-    fun addCustomer(name: String, gstin: String?, address: String?) {
+    fun addCustomer(name: String, gstin: String?, address: String?, phone: String? = null, email: String? = null) {
         viewModelScope.launch {
-            customerDao.insertCustomer(Customer(name = name, gstin = gstin, address = address))
+            customerDao.insertCustomer(Customer(name = name, gstin = gstin, address = address, phone = phone, email = email))
         }
     }
 
-    fun addItem(name: String, rate: Double, gstRate: Double) {
+    fun updateCustomer(customer: Customer) {
         viewModelScope.launch {
-            itemDao.insertItem(Item(name = name, rate = rate, gstRate = gstRate))
+            customerDao.updateCustomer(customer)
+        }
+    }
+
+    fun addItem(name: String, rate: Double, gstRate: Double, unit: String = "Nos", description: String? = null) {
+        viewModelScope.launch {
+            itemDao.insertItem(Item(name = name, rate = rate, gstRate = gstRate, unit = unit, description = description))
+        }
+    }
+
+    fun updateItem(item: Item) {
+        viewModelScope.launch {
+            itemDao.updateItem(item)
         }
     }
 
@@ -147,6 +165,7 @@ class InvoiceViewModel(
             customerDao.deleteCustomer(customer)
         }
     }
+
 
     fun getInvoiceById(id: Long) = flow {
         if (id == -1L) {
