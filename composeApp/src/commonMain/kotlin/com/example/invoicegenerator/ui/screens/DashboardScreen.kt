@@ -95,7 +95,7 @@ fun DashboardScreen(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize(),
-            contentPadding = PaddingValues(bottom = 80.dp),
+           // contentPadding = PaddingValues(bottom = 80.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // 1. Top Bar & Greeting Area
