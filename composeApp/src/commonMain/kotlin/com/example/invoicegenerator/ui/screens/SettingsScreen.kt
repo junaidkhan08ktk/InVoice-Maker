@@ -80,23 +80,7 @@ fun SettingsScreen(
                     title = "Settings",
                     subtitle = "Manage your app preferences and profile.",
                     trailingContent = {
-                        Box(
-                            modifier = Modifier
-                                .size(44.dp)
-                                .clip(CircleShape)
-                                .background(PrimaryPurpleLight)
-                                .clickable { onEditBusiness() },
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = businessInitial,
-                                style = TextStyle(
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = PrimaryPurple
-                                )
-                            )
-                        }
+
                     }
                 )
             }

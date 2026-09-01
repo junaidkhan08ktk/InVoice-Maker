@@ -52,11 +52,12 @@ fun AppScreenHeader(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .statusBarsPadding()
-            .padding(horizontal = 20.dp, vertical = 12.dp),
+            .padding(start = 20.dp, top = 8.dp, end = 20.dp, bottom = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
+
+
 
         Column(modifier = Modifier.weight(1f)) {
             Text(

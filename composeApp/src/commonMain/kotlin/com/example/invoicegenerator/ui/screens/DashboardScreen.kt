@@ -103,51 +103,11 @@ fun DashboardScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .statusBarsPadding()
-                        .padding(horizontal = 20.dp, vertical = 12.dp)
+                        .padding(start = 20.dp, top = 8.dp, end = 20.dp, bottom = 0.dp)
                 ) {
-
-                    // Action Icons Row
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        IconButton(
-                            onClick = { /* Drawer / Menu action */ },
-                            modifier = Modifier.size(36.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = "Menu",
-                                tint = TextPrimary
-                            )
-                        }
-
-                        // Notification Bell with Unread Dot
-                        Box(modifier = Modifier.size(36.dp), contentAlignment = Alignment.Center) {
-                            IconButton(onClick = { /* Notifications */ }) {
-                                Icon(
-                                    imageVector = Icons.Default.Notifications,
-                                    contentDescription = "Notifications",
-                                    tint = TextPrimary
-                                )
-                            }
-                            Box(
-                                modifier = Modifier
-                                    .size(8.dp)
-                                    .align(Alignment.TopEnd)
-                                    .offset(x = (-4).dp, y = 4.dp)
-                                    .clip(CircleShape)
-                                    .background(PrimaryPurple)
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
                     Text(
                         text = greeting,
+
                         style = TextStyle(
                             fontSize = 24.sp,
                             fontWeight = FontWeight.ExtraBold,
@@ -164,6 +124,7 @@ fun DashboardScreen(
                     )
                 }
             }
+
 
             // 2. Hero Total Revenue Card
             item {

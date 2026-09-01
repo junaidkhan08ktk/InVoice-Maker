@@ -346,30 +346,7 @@ fun CustomersScreen(
                     title = "Customers",
                     subtitle = "Manage your all customers in one place.",
                     trailingContent = {
-                        Box(
-                            modifier = Modifier
-                                .size(44.dp)
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(PrimaryPurpleLight)
-                                .clickable { openAddDialog() },
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.PersonAdd,
-                                contentDescription = "Add Customer",
-                                tint = PrimaryPurple,
-                                modifier = Modifier.size(22.dp)
-                            )
-                            // Purple notification dot
-                            Box(
-                                modifier = Modifier
-                                    .size(8.dp)
-                                    .align(Alignment.TopEnd)
-                                    .offset(x = (-6).dp, y = 6.dp)
-                                    .clip(CircleShape)
-                                    .background(PrimaryPurple)
-                            )
-                        }
+
                     }
                 )
             }

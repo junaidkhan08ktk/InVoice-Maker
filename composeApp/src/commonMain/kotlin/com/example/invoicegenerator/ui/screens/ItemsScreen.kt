@@ -338,21 +338,7 @@ fun ItemsScreen(
                     title = "Items",
                     subtitle = "Manage your products and services.",
                     trailingContent = {
-                        Box(
-                            modifier = Modifier
-                                .size(44.dp)
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(PrimaryPurpleLight)
-                                .clickable { openAddDialog() },
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(Res.drawable.ic_items),
-                                contentDescription = "Items",
-                                tint = PrimaryPurple,
-                                modifier = Modifier.size(22.dp)
-                            )
-                        }
+
                     }
                 )
             }
